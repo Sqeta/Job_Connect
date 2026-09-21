@@ -1,8 +1,25 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
-
+    alias(libs.plugins.legacy.kapt)
     id("com.google.gms.google-services")
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { inputStream ->
+        localProperties.load(inputStream)
+    }
+}
+
+val adzunaAppId =
+    localProperties.getProperty("ADZUNA_APP_ID", "")
+
+val adzunaAppKey =
+    localProperties.getProperty("ADZUNA_APP_KEY", "")
 
 android {
     namespace = "com.example.job_connect"
@@ -20,7 +37,20 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner =
+            "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "ADZUNA_APP_ID",
+            "\"$adzunaAppId\""
+        )
+
+        buildConfigField(
+            "String",
+            "ADZUNA_APP_KEY",
+            "\"$adzunaAppKey\""
+        )
     }
 
     buildTypes {
@@ -28,10 +58,16 @@ android {
             isMinifyEnabled = false
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+                ),
                 "proguard-rules.pro"
             )
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {
@@ -41,22 +77,46 @@ android {
 }
 
 dependencies {
+    // WorkManager background job alerts
+    implementation(libs.androidx.work.runtime.ktx)
+    androidTestImplementation(libs.androidx.work.testing)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    // Room local database
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+    testImplementation(libs.androidx.room.testing)
 
-    // Firebase Bill of Materials keeps Firebase libraries compatible.
-    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
+    implementation(
+        "androidx.recyclerview:recyclerview:1.4.0"
+    )
 
-    // Firebase Authentication manages registration, login and passwords.
-    implementation("com.google.firebase:firebase-auth")
+    // Firebase
+    implementation(
+        platform("com.google.firebase:firebase-bom:34.19.0")
+    )
+    implementation(
+        "com.google.firebase:firebase-auth"
+    )
+    implementation(
+        "com.google.firebase:firebase-firestore"
+    )
 
-    // Cloud Firestore stores user profiles and other online information.
-    implementation("com.google.firebase:firebase-firestore")
+    // Retrofit REST API
+    implementation(
+        "com.squareup.retrofit2:retrofit:3.0.0"
+    )
+    implementation(
+        "com.squareup.retrofit2:converter-gson:3.0.0"
+    )
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(
+        libs.androidx.espresso.core
+    )
 }
