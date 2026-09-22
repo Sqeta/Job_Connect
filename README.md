@@ -6,7 +6,7 @@ NAME: SABELO DLOMO ST10436196
 # JobConnect
 
 video link:
-https://youtu.be/Vg1BFPAbh00?si=-IKnIndMlcv3Bs5l 
+https://youtu.be/P-56f0Ux-Bg?si=fMT8uth-kfnl677- 
 
 
 ## About the Project
