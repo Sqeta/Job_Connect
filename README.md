@@ -134,9 +134,29 @@ Automated unit testing was added to confirm that the application’s input-valid
 A total of 16 automated unit tests were created and all 16 tests passed successfully. This provides evidence that the tested validation functions produce the expected results for both acceptable and unacceptable information.
 
 
-<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/2a6a5835-2a0f-4243-be39-a56a44672648" />
+User profile
+<img width="940" height="467" alt="image" src="https://github.com/user-attachments/assets/e6644004-8b9c-4610-9024-600682aa994c" />
 
 
-<img width="940" height="473" alt="image" src="https://github.com/user-attachments/assets/3b7b4090-5e62-46be-8d43-99d6c13c2939" />
+Saved jobs
+<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/bf76df22-8800-4a18-9bdc-228398769d6e" />
 
 
+Applications
+<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/5b98cc02-c324-457a-af84-aef06ce78e86" />
+
+
+CV progress
+<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/a5c7933c-d692-4250-be47-83be64b70fb4" />
+
+
+Room Database Inspector
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/d9697eac-9f90-4ffd-9de7-5dd7ff912975" />
+
+
+Passing unit tests
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/e49baff2-0c38-4669-b6b0-616232b1ec85" />
+
+
+GitHub Actions
+<img width="940" height="473" alt="image" src="https://github.com/user-attachments/assets/50db7613-6fd3-4f95-9794-a0922972235c" />
