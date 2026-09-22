@@ -13,9 +13,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
@@ -106,9 +108,7 @@ class SettingsActivity : AppCompatActivity() {
         btnSaveSettings =
             findViewById(R.id.btnSaveSettings)
 
-        // Dark mode is temporarily disabled.
-        switchDarkMode.isChecked = false
-        switchDarkMode.isEnabled = false
+        switchDarkMode.isEnabled = true
     }
 
     private fun setupLanguageSpinner() {
@@ -148,12 +148,15 @@ class SettingsActivity : AppCompatActivity() {
         val selectedLanguage =
             spinnerLanguage.selectedItem.toString()
 
+        val darkModeEnabled =
+            switchDarkMode.isChecked
+
         val jobAlertsEnabled =
             switchJobAlerts.isChecked
 
         val settings = hashMapOf(
             "language" to selectedLanguage,
-            "darkModeEnabled" to false,
+            "darkModeEnabled" to darkModeEnabled,
             "notificationsEnabled" to jobAlertsEnabled
         )
 
@@ -171,17 +174,19 @@ class SettingsActivity : AppCompatActivity() {
                 btnSaveSettings.isEnabled = true
                 btnSaveSettings.text = "Save settings"
 
+                Toast.makeText(
+                    this,
+                    "Settings saved successfully.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
                 if (jobAlertsEnabled) {
                     enableJobAlerts()
                 } else {
                     cancelJobAlerts()
-
-                    Toast.makeText(
-                        this,
-                        "Settings saved. Job alerts are disabled.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
+
+                applyDarkMode(darkModeEnabled)
 
                 Log.d(
                     TAG,
@@ -206,9 +211,85 @@ class SettingsActivity : AppCompatActivity() {
             }
     }
 
+    private fun loadSettings() {
+        val userId = firebaseAuth.currentUser?.uid
+
+        if (userId == null) {
+            openLoginScreen()
+            return
+        }
+
+        firestore
+            .collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val savedLanguage =
+                    document.getString("language")
+                        ?: "English"
+
+                val languagePosition =
+                    languages.indexOf(savedLanguage)
+
+                if (languagePosition >= 0) {
+                    spinnerLanguage.setSelection(
+                        languagePosition
+                    )
+                }
+
+                switchDarkMode.isEnabled = true
+
+                switchDarkMode.isChecked =
+                    document.getBoolean(
+                        "darkModeEnabled"
+                    ) ?: false
+
+                switchJobAlerts.isChecked =
+                    document.getBoolean(
+                        "notificationsEnabled"
+                    ) ?: true
+
+                Log.d(
+                    TAG,
+                    "Settings loaded successfully"
+                )
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(
+                    this,
+                    "Could not load your settings.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                Log.e(
+                    TAG,
+                    "Failed to load settings",
+                    exception
+                )
+            }
+    }
+
+    private fun applyDarkMode(enabled: Boolean) {
+        val selectedMode =
+            if (enabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+
+        if (
+            AppCompatDelegate.getDefaultNightMode() !=
+            selectedMode
+        ) {
+            AppCompatDelegate.setDefaultNightMode(
+                selectedMode
+            )
+        }
+    }
+
     private fun enableJobAlerts() {
         if (
-            Build.VERSION.SDK_INT >= 33 &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -222,7 +303,7 @@ class SettingsActivity : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                "Settings saved. Job alerts are enabled.",
+                "Job alerts have been enabled.",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -252,7 +333,6 @@ class SettingsActivity : AppCompatActivity() {
                 periodicWorkRequest
             )
 
-        // Runs once immediately so the feature can be tested.
         val testWorkRequest =
             OneTimeWorkRequestBuilder<JobAlertWorker>()
                 .setConstraints(constraints)
@@ -262,7 +342,7 @@ class SettingsActivity : AppCompatActivity() {
             .getInstance(applicationContext)
             .enqueueUniqueWork(
                 TEST_JOB_ALERT_WORK,
-                androidx.work.ExistingWorkPolicy.REPLACE,
+                ExistingWorkPolicy.REPLACE,
                 testWorkRequest
             )
 
@@ -290,54 +370,6 @@ class SettingsActivity : AppCompatActivity() {
             TAG,
             "Job alerts cancelled"
         )
-    }
-
-    private fun loadSettings() {
-        val userId = firebaseAuth.currentUser?.uid
-
-        if (userId == null) {
-            openLoginScreen()
-            return
-        }
-
-        firestore
-            .collection("users")
-            .document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                val savedLanguage =
-                    document.getString("language")
-                        ?: "English"
-
-                val languagePosition =
-                    languages.indexOf(savedLanguage)
-
-                if (languagePosition >= 0) {
-                    spinnerLanguage.setSelection(
-                        languagePosition
-                    )
-                }
-
-                switchDarkMode.isChecked = false
-                switchDarkMode.isEnabled = false
-
-                switchJobAlerts.isChecked =
-                    document.getBoolean(
-                        "notificationsEnabled"
-                    ) ?: true
-
-                Log.d(
-                    TAG,
-                    "Settings loaded successfully"
-                )
-            }
-            .addOnFailureListener { exception ->
-                Log.e(
-                    TAG,
-                    "Failed to load settings",
-                    exception
-                )
-            }
     }
 
     private fun signOutUser() {
@@ -391,8 +423,13 @@ class SettingsActivity : AppCompatActivity() {
             R.id.settingsNavSearch
         ).setOnClickListener {
             startActivity(
-                Intent(this, SearchActivity::class.java)
+                Intent(
+                    this,
+                    SearchActivity::class.java
+                )
             )
+
+            finish()
         }
 
         findViewById<TextView>(
@@ -404,6 +441,8 @@ class SettingsActivity : AppCompatActivity() {
                     SavedJobsActivity::class.java
                 )
             )
+
+            finish()
         }
 
         findViewById<TextView>(

@@ -1,5 +1,6 @@
 package com.example.job_connect
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -54,6 +55,7 @@ class SearchActivity : AppCompatActivity() {
         initialiseViews()
         setupRecyclerView()
         setupSearchButton()
+        setupBottomNavigation()
         loadSearchKeyword()
     }
 
@@ -106,6 +108,53 @@ class SearchActivity : AppCompatActivity() {
 
             hideKeyboard()
             searchJobs(keyword, location)
+        }
+    }
+
+    private fun setupBottomNavigation() {
+        findViewById<TextView>(
+            R.id.searchNavHome
+        ).setOnClickListener {
+            val homeIntent =
+                Intent(this, HomeActivity::class.java)
+
+            homeIntent.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+            startActivity(homeIntent)
+            finish()
+        }
+
+        findViewById<TextView>(
+            R.id.searchNavSearch
+        ).setOnClickListener {
+            // The user is already on the Search page.
+        }
+
+        findViewById<TextView>(
+            R.id.searchNavSaved
+        ).setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    SavedJobsActivity::class.java
+                )
+            )
+
+            finish()
+        }
+
+        findViewById<TextView>(
+            R.id.searchNavProfile
+        ).setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ProfileActivity::class.java
+                )
+            )
+
+            finish()
         }
     }
 
@@ -224,7 +273,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val documentId = job.id.ifBlank {
-            job.redirectUrl.hashCode()
+            job.redirectUrl
+                .hashCode()
                 .toString()
                 .replace("-", "n")
         }
