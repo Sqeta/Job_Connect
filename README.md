@@ -1,4 +1,13 @@
+NAME: KARABO MOHAPI ST10452934 
+NAME: LETLOTLO KWADI ST10453490 
+NAME: SABELO DLOMO ST10436196 
+
+
 # JobConnect
+
+video link:
+https://youtu.be/Vg1BFPAbh00?si=-IKnIndMlcv3Bs5l 
+
 
 ## About the Project
 
