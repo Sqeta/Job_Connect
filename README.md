@@ -169,3 +169,21 @@ Passing unit tests
 
 GitHub Actions
 <img width="940" height="473" alt="image" src="https://github.com/user-attachments/assets/50db7613-6fd3-4f95-9794-a0922972235c" />
+
+
+
+## Release Notes
+
+### JobConnect Final PoE Release – Version 1.0
+
+This release represents the completed version of JobConnect developed for the final Portfolio of Evidence. The application has progressed from its original prototype into a functional Android job-search platform that allows users to manage different parts of their job-seeking journey from one application.
+
+Firebase Authentication was added to provide secure account registration, login, password recovery and session management. Cloud Firestore is used as the online NoSQL database for storing user profiles, preferences, saved jobs, CV checklist progress and job applications. Job opportunities are retrieved from the Adzuna REST API using Retrofit, allowing users to search using a job title, skill and location.
+
+The final version introduces saved-job management, detailed job information and external application links. It also includes an application tracker, CV checklist, profile editing, achievements and user settings. The achievements feature rewards users for completing their profile, recording an application and saving job opportunities.
+
+Room was introduced as a local database for caching saved jobs and supporting access to selected information when the device has no internet connection. WorkManager is used for background job-alert tasks, while user settings allow notification preferences to be enabled or disabled.
+
+The interface was improved with consistent navigation, input validation, loading indicators, user-friendly status messages and a custom JobConnect launcher icon. Automated unit tests were added for important application logic, and GitHub Actions now builds and tests the project whenever changes are pushed to the repository.
+
+The project has also been prepared for publication by generating a signed release APK. This release was tested on an Android device to confirm that the main application features operate correctly.
