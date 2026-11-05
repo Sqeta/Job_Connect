@@ -269,11 +269,12 @@ Successful workflow runs provide evidence that the project can be tested and bui
 
 ### Passing Unit Tests
 
-<img width="940" height="529" alt="Passing JobConnect unit tests" src="https://github.com/user-attachments/assets/e49baff2-0c38-4669-b6b0-616232b1ec85" />
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/1e2a08b6-66aa-44ae-9e02-e6a6414e136c" />
+
 
 ### GitHub Actions
 
-<img width="940" height="473" alt="Successful JobConnect GitHub Actions workflow" src="https://github.com/user-attachments/assets/50db7613-6fd3-4f95-9794-a0922972235c" />
+<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/4e4afb69-1900-4a0d-a116-ffec926a3c5e" />
 
 ## Release Preparation
 
