@@ -159,9 +159,6 @@ Firebase Cloud Messaging handles remote push messages, while WorkManager handles
 
 - Kotlin
 - Android Studio
-- XML layouts
-- AndroidX
-- Material Components
 - Firebase Authentication
 - Google Sign-In
 - Cloud Firestore
