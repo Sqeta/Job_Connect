@@ -1,189 +1,335 @@
-NAME: KARABO MOHAPI ST10452934 
-NAME: LETLOTLO KWADI ST10453490 
-NAME: SABELO DLOMO ST10436196 
-
-
 # JobConnect
 
-video link:
-https://youtu.be/P-56f0Ux-Bg?si=fMT8uth-kfnl677- 
+**Karabo Mohapi – ST10452934**  
+**Letlotlo Kwadi – ST10453490**  
+**Sabelo Dlomo – ST10436196**
 
 
 ## About the Project
 
-JobConnect is an Android mobile application designed to make searching and applying for jobs easier and more organised. The application gives job seekers one place where they can search for opportunities, read job descriptions, save vacancies and keep track of their applications.
+JobConnect is an Android job-search application designed to help job seekers find employment opportunities and manage their job-seeking journey from one platform.
 
-The application was developed by Karabo Mohapi as part of the APPR6312 Mobile Application Development Portfolio of Evidence at Rosebank College. It demonstrates the practical use of Kotlin, Android Studio, Firebase, Room, Retrofit, WorkManager, automated unit testing and GitHub Actions.
+Users can create an account, sign in securely, search for live vacancies, view job details, save opportunities and track applications. The application also includes profile management, a CV checklist, achievements, multilingual support, push notifications and offline synchronisation.
+
+JobConnect was developed for the APPR6312 Mobile Application Development Portfolio of Evidence at Rosebank College.
 
 ## The Problem
 
-Searching for employment can become difficult because vacancies are normally spread across many different websites. Job seekers may find several interesting opportunities but later forget where they found them or whether they have already applied.
+Employment opportunities are often spread across different websites. Job seekers may save several vacancies but later forget where they found them or whether they have already applied.
 
-Managing application progress can also become confusing, especially when a person applies for several positions. It may be difficult to remember which applications are still being reviewed, which have reached the interview stage and which have already been completed.
+Many job-search platforms also depend completely on an internet connection. This makes it difficult for users to perform important actions when their connection is unavailable.
 
-Another challenge is that most job-search platforms depend entirely on an internet connection. When users lose connectivity, they may not be able to access job information they previously saved. JobConnect was created to bring these activities together and provide limited offline access to important information.
+JobConnect addresses these problems by combining job searching, saved opportunities, application tracking and career-preparation tools in one application.
 
-## The JobConnect Solution
+## Main Features
 
-JobConnect provides users with a simple platform for managing different parts of their employment journey. A user can register an account, sign in securely and search for live vacancies using a job title, skill or location.
+- Email and password registration and login
+- Google Single Sign-On
+- Firebase password recovery
+- Live job searching through the Adzuna Jobs API
+- Job details and external application links
+- Saved-job management
+- Offline job saving using Room
+- Automatic synchronisation after reconnection
+- Application tracker
+- CV checklist and progress tracking
+- Achievement badges
+- Profile viewing and editing
+- English, isiZulu and Sesotho support
+- Firebase Cloud Messaging push notifications
+- WorkManager job-alert reminders
+- Firebase Firestore cloud storage
+- Automated unit testing
+- GitHub Actions continuous integration
+- Signed APK and Android App Bundle
 
-The application allows users to open a vacancy, read its information, save it for later and visit the original website when they are ready to apply. Saved jobs are associated with the signed-in account, which ensures that every user has their own private list.
+## Authentication
 
-JobConnect also includes an application tracker, a CV checklist, achievement badges, a personal profile and job-alert preferences. These features make the application more than a basic job-search tool because they help users prepare for opportunities and remain organised throughout the application process.
+Firebase Authentication manages account registration, login, password recovery and session management.
 
-## Registration and Login
+Users can sign in using:
 
-New users can create an account by providing their personal information, email address and password. Firebase Authentication is used to create and protect the account, while additional user information is stored in Cloud Firestore.
+- Email and password
+- Google Single Sign-On
 
-Registered users can sign in using their email address and password. If a user forgets their password, they can request a password-reset email. The application checks whether a valid user is signed in before opening pages containing personal information.
+Additional profile information is stored in Cloud Firestore under the authenticated user’s unique Firebase ID. The application checks that a valid user is signed in before displaying private information.
 
-After signing in, the user is taken to the home page, where a personalised greeting is displayed. The greeting changes according to the time of day and uses the name available on the user’s profile.
+## Job Searching
 
-## Searching for Jobs
+JobConnect uses the Adzuna Jobs API to retrieve live employment opportunities.
 
-JobConnect uses the Adzuna Jobs API to retrieve live employment opportunities. Users enter a job title or skill and then provide a city or province. The application sends this information to Adzuna and displays the matching results.
+Users can search using:
 
-Each result can include the job title, company name, location, contract type and vacancy description. If no results are available, the application displays a helpful message instead of leaving the page empty. It also informs the user when a request cannot be completed because of a connection problem.
+- A job title
+- A skill
+- A city
+- A province
 
-When a user selects a result, the job-details page displays more information about the opportunity. The user can save the job or open the original vacancy website to continue with the application process.
+Retrofit sends the request to Adzuna, while Gson converts the returned JSON information into Kotlin objects. Results are displayed using RecyclerView.
 
-## Saved Jobs and Offline Access
+A job result can include its title, company, location, contract type and description. Selecting a result opens the job-details page, where the user can save the opportunity or visit the original application website.
 
-Users can save interesting opportunities to their accounts. These jobs are stored in Cloud Firestore under the unique ID of the signed-in user, which prevents information from different accounts from being mixed together.
+## Saved Jobs and Offline Synchronisation
 
-JobConnect also uses Room to keep a local copy of saved jobs on the Android device. When the application successfully retrieves saved jobs from Firestore, the information is added to the local Room database.
+Saved jobs are stored online under the signed-in user’s Firestore account. Room is also used as the local Android database.
 
-If the internet connection becomes unavailable, the application can display jobs that were previously cached. This does not make every feature fully available offline, but it allows users to access important saved information without using mobile data.
+When a user saves a job while offline, JobConnect:
 
-The local records were successfully verified using Android Studio’s Database Inspector. The inspector displayed the saved-job information stored inside the application’s local database.
+1. Stores the job in the local Room database.
+2. Marks the record as waiting for synchronisation.
+3. Schedules an `OfflineJobSyncWorker`.
+4. Waits until an internet connection is available.
+5. Uploads the pending job to Cloud Firestore.
+6. Marks the local record as synchronised.
+
+This allows an important action to be completed without an active internet connection and synchronised automatically after reconnection.
 
 ## Application Tracker
 
-The application tracker helps users organise the progress of their applications. Instead of trying to remember every vacancy, users can record applications and view their current stages in one place.
+The application tracker helps users monitor the progress of their job applications.
 
-An application can move through stages such as saved, applied or interview. This gives users a clearer view of their employment journey and helps them identify applications that may require follow-up.
+Applications are stored under the authenticated user’s Firestore account and can move through different stages, including applied and interview stages.
 
-Application information is saved under the authenticated user’s Firestore account. This keeps each person’s records private and separate from the information belonging to other users.
+This gives users a clearer view of their employment journey and reduces the need to remember every application manually.
 
 ## CV Checklist
 
-The CV checklist helps users prepare before applying for employment. It focuses on important areas such as contact details, education, skills and projects.
+The CV checklist helps users prepare a more complete professional CV.
 
-As the user completes these sections, JobConnect calculates their progress and stores the result in Firestore. The checklist allows users to see which parts have been completed and which still require attention.
+It focuses on areas such as:
 
-This feature is useful for students and graduates who may not be certain whether they have included all the important information needed for a professional CV.
+- Contact information
+- Education
+- Skills
+- Projects
+- Employment-related information
+
+The user’s progress is calculated and stored in Firestore. This makes it easier to identify incomplete sections before applying for employment.
 
 ## Achievements
 
-JobConnect includes achievements to encourage users to complete important activities. Instead of displaying achievements randomly, the application checks the user’s actual information in Firestore.
+JobConnect includes achievement badges that are unlocked using the user’s actual progress.
 
-A user can unlock the Profile Starter achievement by completing enough of the CV checklist. The First Application achievement is unlocked after recording an application, while the Consistent Searcher achievement recognises users who save several job opportunities.
+Examples include:
 
-This feature adds motivation and allows users to see the progress they have made while using the application.
+- Completing enough of the CV checklist
+- Recording a first application
+- Saving multiple job opportunities
+
+The achievements encourage users to remain active and complete important job-seeking tasks.
 
 ## Profile Management
 
-The profile page displays personal and career-related information belonging to the signed-in user. This includes the user’s name, email address, education, skills, preferred locations and preferred job types.
+The profile page displays the user’s:
 
-Users can edit this information through the profile-editing feature. Once the changes have been saved, the Firestore user document is updated and the new information appears on the profile page.
+- Full name
+- Email address
+- Education
+- Skills
+- Preferred locations
+- Preferred job types
 
-Keeping this information in one place allows JobConnect to provide a more personalised experience and creates a foundation for improved job recommendations in future versions.
+Users can edit their information, and the updated values are saved in Cloud Firestore.
 
-## Settings and Job Alerts
+## Multilingual Support
 
-The settings page allows users to manage application preferences and sign out of their accounts. Users can select a preferred language and choose whether job-alert notifications should be enabled.
+JobConnect contains real translated content in three languages:
 
-WorkManager is used to schedule background job-alert tasks. This Android component is suitable because it can manage work that should continue reliably even after the user leaves the application.
+- English
+- isiZulu
+- Sesotho
 
-When job alerts are enabled, JobConnect schedules background work and can display a job-search reminder. When the user disables alerts, the scheduled background work is cancelled.
+The selected language is applied using Android application locales and retained for later sessions. Important screens such as login, registration, home, search, saved jobs, profile and settings use Android string resources so that their text can change according to the selected language.
 
-The selected language is currently stored as part of the user’s settings. Complete translation of every application screen will be introduced as a future improvement.
+## Notifications
+
+JobConnect uses two notification approaches.
+
+### Firebase Push Notifications
+
+Firebase Cloud Messaging is used to deliver real-time push notifications to the Android device. The application retrieves an FCM registration token and uses a custom `FirebaseMessagingService` to receive and display messages.
+
+### WorkManager Reminders
+
+WorkManager schedules reliable background job-alert reminders according to the user’s notification preference.
+
+Firebase Cloud Messaging handles remote push messages, while WorkManager handles scheduled background reminders.
 
 ## Technologies Used
 
-JobConnect was developed using Kotlin and Android Studio. XML was used to design the application screens, while AndroidX and Material Components provided the main interface elements.
+- Kotlin
+- Android Studio
+- XML layouts
+- AndroidX
+- Material Components
+- Firebase Authentication
+- Google Sign-In
+- Cloud Firestore
+- Firebase Cloud Messaging
+- Room Database
+- WorkManager
+- Retrofit
+- Gson
+- RecyclerView
+- Adzuna Jobs API
+- JUnit
+- GitHub Actions
+- Git and GitHub
 
-Firebase Authentication manages registration, login, password recovery and sign-out. Cloud Firestore stores online information such as user profiles, saved jobs, CV progress, settings and application records.
+## Project Configuration
 
-Room provides the local database used to cache saved jobs. Retrofit connects the application to the Adzuna Jobs API, while Gson converts the returned information into Kotlin objects that can be displayed inside the application.
+### Requirements
 
-RecyclerView is used to display dynamic lists of jobs and applications. WorkManager manages background tasks, JUnit supports automated testing and GitHub Actions automatically tests and builds the project when changes are uploaded.
+- Android Studio
+- Android SDK 36
+- Minimum Android SDK 24
+- Java 11
+- Firebase project
+- Adzuna developer credentials
 
-## Adzuna Jobs API
+### Adzuna API Configuration
 
-The Adzuna Jobs API supplies the vacancy information displayed by JobConnect. When a search is performed, the application sends the selected keyword and location together with the required Adzuna credentials.
+The Adzuna Application ID and Application Key are not written directly into the Kotlin source code.
 
-Retrofit manages the request and receives the response. The returned information is converted into Kotlin job objects and passed to the adapter responsible for displaying the results.
+Add the following values to the root `local.properties` file:
 
-For security reasons, the Adzuna Application ID and Application Key are not written directly inside the Kotlin source code. They are placed in the local `local.properties` file and accessed through generated `BuildConfig` values.
+```properties
+ADZUNA_APP_ID=your_adzuna_application_id
+ADZUNA_APP_KEY=your_adzuna_application_key
+```
 
-## Firebase and Data Storage
+Android Studio automatically adds the local SDK path to this same file.
 
-Firebase Authentication is responsible for securely managing user accounts. Passwords are handled by Firebase and are not stored directly by JobConnect inside Firestore.
+The Gradle configuration reads these values and makes them available through `BuildConfig`.
 
-Cloud Firestore stores the online information used by the application. Every user document is identified by the unique ID provided by Firebase Authentication. The user’s saved jobs, applications and CV progress are stored under that user document.
+Do not upload `local.properties` to GitHub because it contains local configuration and private API credentials.
 
-Firestore security rules ensure that users can access only their own information. A signed-in user cannot read or modify the personal records belonging to another account.
+### Firebase Configuration
 
-Room works alongside Firestore by storing selected information on the Android device. Firestore remains the main online database, while Room provides a local cache for previously saved jobs.
+To connect the application to Firebase:
+
+1. Create or open the Firebase project.
+2. Register an Android application using:
+
+   `com.example.job_connect`
+
+3. Download `google-services.json`.
+4. Place it inside the `app` directory.
+5. Enable Email/Password Authentication.
+6. Configure Google Sign-In.
+7. Add the required SHA-1 certificate fingerprint.
+8. Enable Cloud Firestore.
+9. Enable Firebase Cloud Messaging.
+10. Sync the Gradle project.
 
 ## Security
 
-Security was considered throughout the development of JobConnect. Firebase Authentication protects account access, while Firestore rules restrict users to their own documents and collections.
+JobConnect uses Firebase Authentication to protect account access. User passwords are managed by Firebase and are not stored directly inside Cloud Firestore.
 
-The application checks that a user is authenticated before displaying private pages. Important input is validated before it is processed, and passwords are never stored directly in the application database.
+Firestore information is organised under each authenticated user’s unique ID. Security rules should allow users to read and modify only their own records.
 
-Sensitive local information, including API credentials, should be excluded from Git version control. This prevents private values from being exposed when the project is uploaded to GitHub.
-
+The application validates important input before processing it. Sensitive credentials are read from local configuration and should not be committed to version control.
 
 ## Automated Testing
 
-Automated unit testing was added to confirm that the application’s input-validation functions behave correctly. These tests cover valid and invalid names, email-address formats, passwords, password confirmation and blank input.
+JobConnect includes 16 JUnit unit tests for the `InputValidator` utility.
 
-A total of 16 automated unit tests were created and all 16 tests passed successfully. This provides evidence that the tested validation functions produce the expected results for both acceptable and unacceptable information.
+The tests cover:
 
+- Valid and invalid names
+- Valid and invalid email addresses
+- Password validation
+- Password confirmation
+- Blank input
+- Comma-separated text conversion
+- Removal of blank values
+- Removal of duplicate values
 
-User profile
-<img width="940" height="467" alt="image" src="https://github.com/user-attachments/assets/e6644004-8b9c-4610-9024-600682aa994c" />
+All 16 unit tests passed successfully.
 
+Tests can be executed with:
 
-Saved jobs
-<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/bf76df22-8800-4a18-9bdc-228398769d6e" />
+```powershell
+.\gradlew.bat testDebugUnitTest
+```
 
+## GitHub Actions
 
-Applications
-<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/5b98cc02-c324-457a-af84-aef06ce78e86" />
+The repository contains a GitHub Actions workflow named **JobConnect Android CI**.
 
+The workflow runs automatically when project changes are pushed to GitHub. It checks out the source code, prepares the Java and Android build environment, runs the automated tests and builds the Android project.
 
-CV progress
-<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/a5c7933c-d692-4250-be47-83be64b70fb4" />
+Successful workflow runs provide evidence that the project can be tested and built consistently outside the local development environment.
 
+## Evidence
 
-Room Database Inspector
-<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/d9697eac-9f90-4ffd-9de7-5dd7ff912975" />
+### User Profile
 
+<img width="940" height="467" alt="User profile stored in Firestore" src="https://github.com/user-attachments/assets/e6644004-8b9c-4610-9024-600682aa994c" />
 
-Passing unit tests
-<img width="940" height="529" alt="image" src="https://github.com/user-attachments/assets/e49baff2-0c38-4669-b6b0-616232b1ec85" />
+### Saved Jobs
 
+<img width="940" height="477" alt="Saved jobs stored in Firestore" src="https://github.com/user-attachments/assets/bf76df22-8800-4a18-9bdc-228398769d6e" />
 
-GitHub Actions
-<img width="940" height="473" alt="image" src="https://github.com/user-attachments/assets/50db7613-6fd3-4f95-9794-a0922972235c" />
+### Applications
 
+<img width="940" height="477" alt="Applications stored in Firestore" src="https://github.com/user-attachments/assets/5b98cc02-c324-457a-af84-aef06ce78e86" />
 
+### CV Progress
+
+<img width="940" height="477" alt="CV progress stored in Firestore" src="https://github.com/user-attachments/assets/a5c7933c-d692-4250-be47-83be64b70fb4" />
+
+### Room Database Inspector
+
+<img width="940" height="529" alt="Room database records" src="https://github.com/user-attachments/assets/d9697eac-9f90-4ffd-9de7-5dd7ff912975" />
+
+### Passing Unit Tests
+
+<img width="940" height="529" alt="Passing JobConnect unit tests" src="https://github.com/user-attachments/assets/e49baff2-0c38-4669-b6b0-616232b1ec85" />
+
+### GitHub Actions
+
+<img width="940" height="473" alt="Successful JobConnect GitHub Actions workflow" src="https://github.com/user-attachments/assets/50db7613-6fd3-4f95-9794-a0922972235c" />
+
+## Release Preparation
+
+JobConnect has been prepared for release by generating:
+
+- A signed release APK for Android installation and testing
+- A signed Android App Bundle for Google Play Console
+- Play Console developer-account preparation evidence
+- Automated test evidence
+- GitHub Actions build evidence
+
+The application has not been publicly published to Google Play. The Play Console preparation demonstrates that the required release information and Android App Bundle are ready.
 
 ## Release Notes
 
 ### JobConnect Final PoE Release – Version 1.0
 
-This release represents the completed version of JobConnect developed for the final Portfolio of Evidence. The application has progressed from its original prototype into a functional Android job-search platform that allows users to manage different parts of their job-seeking journey from one application.
+This release represents the completed JobConnect Portfolio of Evidence application.
 
-Firebase Authentication was added to provide secure account registration, login, password recovery and session management. Cloud Firestore is used as the online NoSQL database for storing user profiles, preferences, saved jobs, CV checklist progress and job applications. Job opportunities are retrieved from the Adzuna REST API using Retrofit, allowing users to search using a job title, skill and location.
+The final release introduces:
 
-The final version introduces saved-job management, detailed job information and external application links. It also includes an application tracker, CV checklist, profile editing, achievements and user settings. The achievements feature rewards users for completing their profile, recording an application and saving job opportunities.
+- Google Single Sign-On
+- Firebase email and password authentication
+- Password recovery
+- Live Adzuna job searches
+- Saved-job management
+- Offline saving using Room
+- Automatic synchronisation using WorkManager
+- Application tracking
+- CV progress tracking
+- Achievement badges
+- Profile management
+- English, isiZulu and Sesotho content
+- Firebase Cloud Messaging push notifications
+- Background job-alert reminders
+- Sixteen passing unit tests
+- GitHub Actions continuous integration
+- A signed APK
+- A signed Android App Bundle
+- Google Play Console preparation
 
-Room was introduced as a local database for caching saved jobs and supporting access to selected information when the device has no internet connection. WorkManager is used for background job-alert tasks, while user settings allow notification preferences to be enabled or disabled.
+The final version was tested on a physical Android device to confirm that the main features operate correctly.
 
-The interface was improved with consistent navigation, input validation, loading indicators, user-friendly status messages and a custom JobConnect launcher icon. Automated unit tests were added for important application logic, and GitHub Actions now builds and tests the project whenever changes are pushed to the repository.
-
-The project has also been prepared for publication by generating a signed release APK. This release was tested on an Android device to confirm that the main application features operate correctly.
