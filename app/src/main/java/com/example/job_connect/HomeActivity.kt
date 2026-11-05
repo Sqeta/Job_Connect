@@ -14,6 +14,7 @@ class HomeActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "HomeActivity"
+        private const val SEARCH_KEYWORD = "SEARCH_KEYWORD"
     }
 
     private lateinit var firebaseAuth: FirebaseAuth
@@ -44,23 +45,39 @@ class HomeActivity : AppCompatActivity() {
         val greetingText =
             findViewById<TextView>(R.id.tvGreeting)
 
-        val userName = firebaseAuth.currentUser
-            ?.displayName
-            ?.substringBefore(" ")
-            ?.takeIf { it.isNotBlank() }
-            ?: "Job Seeker"
+        val userName =
+            firebaseAuth.currentUser
+                ?.displayName
+                ?.substringBefore(" ")
+                ?.takeIf { it.isNotBlank() }
+                ?: getString(R.string.job_seeker)
 
-        val hour = Calendar.getInstance()
-            .get(Calendar.HOUR_OF_DAY)
+        val hour =
+            Calendar.getInstance().get(
+                Calendar.HOUR_OF_DAY
+            )
 
-        val greeting = when (hour) {
-            in 0..11 -> "Good morning"
-            in 12..17 -> "Good afternoon"
-            else -> "Good evening"
-        }
+        val greeting =
+            when (hour) {
+                in 0..11 -> {
+                    getString(R.string.good_morning)
+                }
+
+                in 12..17 -> {
+                    getString(R.string.good_afternoon)
+                }
+
+                else -> {
+                    getString(R.string.good_evening)
+                }
+            }
 
         greetingText.text =
-            "$greeting, $userName"
+            getString(
+                R.string.greeting_with_name,
+                greeting,
+                userName
+            )
     }
 
     private fun setupHomeSearch() {
@@ -80,7 +97,7 @@ class HomeActivity : AppCompatActivity() {
         findViewById<TextView>(
             R.id.navHome
         ).setOnClickListener {
-            // Already on Home.
+            // The user is already on the Home screen.
         }
 
         findViewById<TextView>(
@@ -110,7 +127,10 @@ class HomeActivity : AppCompatActivity() {
                 )
             )
 
-            Log.d(TAG, "Profile navigation selected")
+            Log.d(
+                TAG,
+                "Profile navigation selected"
+            )
         }
     }
 
@@ -126,6 +146,8 @@ class HomeActivity : AppCompatActivity() {
             )
 
         androidDeveloperCard.setOnClickListener {
+            // Keep API search keywords in English because
+            // they are sent to the external jobs API.
             openSearchScreen("Android Developer")
         }
 
@@ -138,10 +160,13 @@ class HomeActivity : AppCompatActivity() {
         keyword: String = ""
     ) {
         val searchIntent =
-            Intent(this, SearchActivity::class.java)
+            Intent(
+                this,
+                SearchActivity::class.java
+            )
 
         searchIntent.putExtra(
-            "SEARCH_KEYWORD",
+            SEARCH_KEYWORD,
             keyword
         )
 

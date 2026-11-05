@@ -1,3 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Job_Connect</string>
+
+    <string name="app_name">JobConnect</string>
+
+    <string name="settings">Settings</string>
+    <string name="settings_subtitle">Make JobConnect yours</string>
+    <string name="language">Language</string>
+    <string name="appearance">Appearance</string>
+    <string name="use_dark_mode">Use dark mode</string>
+    <string name="job_alerts">Job alerts</string>
+    <string name="job_alert_description">Notify me about matching opportunities</string>
+    <string name="save_settings">Save settings</string>
+    <string name="saving">Saving…</string>
+    <string name="sign_out">Sign out</string>
+
+    <string name="nav_home">●\nHome</string>
+    <string name="nav_search">●\nSearch</string>
+    <string name="nav_saved">●\nSaved</string>
+    <string name="nav_profile">●\nProfile</string>
+
+    <string name="settings_saved">Settings saved successfully.</string>
+    <string name="settings_save_failed">Could not save settings.</string>
+    <string name="settings_load_failed">Could not load your settings.</string>
+    <string name="job_alerts_enabled">Job alerts have been enabled.</string>
+    <string name="notification_permission_required">Notification permission is required for job alerts.</string>
+    <string name="signed_out">Signed out successfully.</string>
+
+    <string name="login_title">Sign In</string>
+    <string name="login_subtitle">Welcome back to JobConnect</string>
+    <string name="jobconnect_logo">JobConnect logo</string>
+    <string name="jobconnect_name">JobConnect</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="or">OR</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="create_account_prompt">Don’t have an account? Create account</string>
+
+    <string name="register_title">Register</string>
+    <string name="register_subtitle">Build your JobConnect profile</string>
+    <string name="full_name">Full name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="create_account">Create account</string>
+    <string name="already_have_account">Already have an account? Sign in</string>
+
+    <string name="home_title">Home</string>
+    <string name="good_morning">Good morning</string>
+    <string name="search_jobs_or_skills">Search jobs or skills</string>
+    <string name="graduate_roles">Graduate roles</string>
+    <string name="junior_android_developer">Junior Android Developer</string>
+    <string name="johannesburg_entry_level">Johannesburg | Entry level</string>
+    <string name="it_support_intern">IT Support Intern</string>
+    <string name="pretoria_internship">Pretoria | Internship</string>
+
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="job_seeker">Job Seeker</string>
+    <string name="greeting_with_name">%1$s, %2$s</string>
+
+    <string name="search_jobs_title">Search Jobs</string>
+    <string name="search_jobs_subtitle">Find your next opportunity</string>
+    <string name="job_title_or_skill">Job title or skill</string>
+    <string name="city_or_province">City or province</string>
+    <string name="search_jobs_button">Search jobs</string>
+    <string name="search_start_message">Enter a job title and location to begin.</string>
+
+    <string name="enter_job_title_error">Please enter a job title or skill</string>
+    <string name="enter_city_error">Please enter a city or province</string>
+    <string name="enter_location_for_jobs">Enter a location to search for %1$s jobs.</string>
+    <string name="searching_jobs_in">Searching for %1$s jobs in %2$s…</string>
+    <string name="no_jobs_found">No jobs found. Try another title or location.</string>
+    <string name="job_opportunities_found">%1$d job opportunities found</string>
+    <string name="unable_load_jobs_error_code">Unable to load jobs. Error code: %1$d</string>
+    <string name="connection_failed">Connection failed. Check your internet and try again.</string>
+    <string name="could_not_connect_adzuna">Could not connect to Adzuna</string>
+    <string name="sign_in_before_saving">Please sign in before saving a job.</string>
+    <string name="job_opportunity">Job opportunity</string>
+    <string name="job_saved_successfully">Job saved successfully</string>
+    <string name="could_not_save_job">Could not save job. Please try again.</string>
+    <string name="searching">Searching…</string>
+
+    <string name="saved_jobs_title">Saved Jobs</string>
+    <string name="saved_jobs_subtitle">Your saved opportunities</string>
+    <string name="no_saved_jobs">You have not saved any jobs yet.</string>
+    <string name="view_application_tracker">View application tracker</string>
+
+    <string name="company_not_provided">Company not provided</string>
+    <string name="location_not_provided">Location not provided</string>
+    <string name="could_not_load_saved_jobs">Could not load saved jobs.</string>
+    <string name="no_cached_saved_jobs">No cached saved jobs are available.</string>
+    <string name="offline_mode_saved_jobs">Offline mode: showing saved jobs from this device.</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="profile_subtitle">Your career information</string>
+    <string name="skills">Skills</string>
+    <string name="no_skills_added">No skills added yet</string>
+    <string name="preferences">Preferences</string>
+    <string name="no_preferences_added">No preferences added yet</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="view_achievements">View achievements</string>
+
+    <string name="email_not_provided">Email not provided</string>
+    <string name="education_format">Education: %1$s</string>
+    <string name="skills_and_education">%1$s\n%2$s</string>
+    <string name="could_not_load_profile">Could not load your profile.</string>
+
+
+
 </resources>

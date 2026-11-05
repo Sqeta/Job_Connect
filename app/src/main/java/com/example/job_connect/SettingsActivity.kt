@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -33,10 +34,8 @@ class SettingsActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "SettingsActivity"
-
         private const val PERIODIC_JOB_ALERT_WORK =
             "periodic_job_alert_work"
-
         private const val TEST_JOB_ALERT_WORK =
             "test_job_alert_work"
     }
@@ -45,15 +44,19 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     private lateinit var spinnerLanguage: Spinner
-    private lateinit var switchDarkMode: SwitchMaterial
     private lateinit var switchJobAlerts: SwitchMaterial
     private lateinit var btnSaveSettings: Button
 
     private val languages = listOf(
         "English",
-        "Afrikaans",
         "isiZulu",
         "Sesotho"
+    )
+
+    private val languageCodes = listOf(
+        "en",
+        "zu",
+        "st"
     )
 
     private val notificationPermissionLauncher =
@@ -66,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "Job alerts have been enabled.",
+                    getString(R.string.job_alerts_enabled),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -75,13 +78,19 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "Notification permission is required for job alerts.",
+                    getString(
+                        R.string.notification_permission_required
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
@@ -99,30 +108,36 @@ class SettingsActivity : AppCompatActivity() {
         spinnerLanguage =
             findViewById(R.id.spinnerLanguage)
 
-        switchDarkMode =
-            findViewById(R.id.switchDarkMode)
-
         switchJobAlerts =
             findViewById(R.id.switchJobAlerts)
 
         btnSaveSettings =
             findViewById(R.id.btnSaveSettings)
-
-        switchDarkMode.isEnabled = true
     }
 
     private fun setupLanguageSpinner() {
-        val languageAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            languages
-        )
+        val adapter =
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                languages
+            )
 
-        languageAdapter.setDropDownViewResource(
+        adapter.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
         )
 
-        spinnerLanguage.adapter = languageAdapter
+        spinnerLanguage.adapter = adapter
+
+        val currentCode =
+            currentLanguageCode()
+
+        val position =
+            languageCodes.indexOf(currentCode)
+
+        spinnerLanguage.setSelection(
+            if (position >= 0) position else 0
+        )
     }
 
     private fun setupButtons() {
@@ -138,30 +153,36 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun saveSettings() {
-        val userId = firebaseAuth.currentUser?.uid
+        val userId =
+            firebaseAuth.currentUser?.uid
 
         if (userId == null) {
             openLoginScreen()
             return
         }
 
-        val selectedLanguage =
-            spinnerLanguage.selectedItem.toString()
+        val position =
+            spinnerLanguage.selectedItemPosition
 
-        val darkModeEnabled =
-            switchDarkMode.isChecked
+        val selectedLanguage =
+            languages[position]
+
+        val selectedLanguageCode =
+            languageCodes[position]
 
         val jobAlertsEnabled =
             switchJobAlerts.isChecked
 
-        val settings = hashMapOf(
-            "language" to selectedLanguage,
-            "darkModeEnabled" to darkModeEnabled,
-            "notificationsEnabled" to jobAlertsEnabled
-        )
+        val settings =
+            hashMapOf(
+                "language" to selectedLanguage,
+                "languageCode" to selectedLanguageCode,
+                "notificationsEnabled" to jobAlertsEnabled
+            )
 
         btnSaveSettings.isEnabled = false
-        btnSaveSettings.text = "Saving..."
+        btnSaveSettings.text =
+            getString(R.string.saving)
 
         firestore
             .collection("users")
@@ -172,13 +193,8 @@ class SettingsActivity : AppCompatActivity() {
             )
             .addOnSuccessListener {
                 btnSaveSettings.isEnabled = true
-                btnSaveSettings.text = "Save settings"
-
-                Toast.makeText(
-                    this,
-                    "Settings saved successfully.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                btnSaveSettings.text =
+                    getString(R.string.save_settings)
 
                 if (jobAlertsEnabled) {
                     enableJobAlerts()
@@ -186,20 +202,29 @@ class SettingsActivity : AppCompatActivity() {
                     cancelJobAlerts()
                 }
 
-                applyDarkMode(darkModeEnabled)
+                applyLanguage(selectedLanguageCode)
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.settings_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 Log.d(
                     TAG,
-                    "User settings saved successfully"
+                    "Settings saved successfully"
                 )
             }
             .addOnFailureListener { exception ->
                 btnSaveSettings.isEnabled = true
-                btnSaveSettings.text = "Save settings"
+                btnSaveSettings.text =
+                    getString(R.string.save_settings)
 
                 Toast.makeText(
                     this,
-                    "Could not save settings.",
+                    getString(
+                        R.string.settings_save_failed
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -212,7 +237,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun loadSettings() {
-        val userId = firebaseAuth.currentUser?.uid
+        val userId =
+            firebaseAuth.currentUser?.uid
 
         if (userId == null) {
             openLoginScreen()
@@ -224,30 +250,31 @@ class SettingsActivity : AppCompatActivity() {
             .document(userId)
             .get()
             .addOnSuccessListener { document ->
-                val savedLanguage =
-                    document.getString("language")
-                        ?: "English"
+                val languageCode =
+                    document.getString(
+                        "languageCode"
+                    ) ?: currentLanguageCode()
 
                 val languagePosition =
-                    languages.indexOf(savedLanguage)
-
-                if (languagePosition >= 0) {
-                    spinnerLanguage.setSelection(
-                        languagePosition
+                    languageCodes.indexOf(
+                        languageCode
                     )
-                }
 
-                switchDarkMode.isEnabled = true
+                spinnerLanguage.setSelection(
+                    if (languagePosition >= 0) {
+                        languagePosition
+                    } else {
+                        0
+                    }
+                )
 
-                switchDarkMode.isChecked =
-                    document.getBoolean(
-                        "darkModeEnabled"
-                    ) ?: false
-
-                switchJobAlerts.isChecked =
+                val notificationsEnabled =
                     document.getBoolean(
                         "notificationsEnabled"
                     ) ?: true
+
+                switchJobAlerts.isChecked =
+                    notificationsEnabled
 
                 Log.d(
                     TAG,
@@ -257,7 +284,9 @@ class SettingsActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(
                     this,
-                    "Could not load your settings.",
+                    getString(
+                        R.string.settings_load_failed
+                    ),
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -269,27 +298,35 @@ class SettingsActivity : AppCompatActivity() {
             }
     }
 
-    private fun applyDarkMode(enabled: Boolean) {
-        val selectedMode =
-            if (enabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
+    private fun currentLanguageCode(): String {
+        return AppCompatDelegate
+            .getApplicationLocales()
+            .toLanguageTags()
+            .substringBefore("-")
+            .ifBlank { "en" }
+    }
 
-        if (
-            AppCompatDelegate.getDefaultNightMode() !=
-            selectedMode
-        ) {
-            AppCompatDelegate.setDefaultNightMode(
-                selectedMode
-            )
+    private fun applyLanguage(
+        languageCode: String
+    ) {
+        if (currentLanguageCode() == languageCode) {
+            return
         }
+
+        val locales =
+            LocaleListCompat.forLanguageTags(
+                languageCode
+            )
+
+        AppCompatDelegate.setApplicationLocales(
+            locales
+        )
     }
 
     private fun enableJobAlerts() {
         if (
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            Build.VERSION.SDK_INT >=
+            Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -303,7 +340,9 @@ class SettingsActivity : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                "Job alerts have been enabled.",
+                getString(
+                    R.string.job_alerts_enabled
+                ),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -317,7 +356,7 @@ class SettingsActivity : AppCompatActivity() {
                 )
                 .build()
 
-        val periodicWorkRequest =
+        val periodicRequest =
             PeriodicWorkRequestBuilder<JobAlertWorker>(
                 24,
                 TimeUnit.HOURS
@@ -330,10 +369,10 @@ class SettingsActivity : AppCompatActivity() {
             .enqueueUniquePeriodicWork(
                 PERIODIC_JOB_ALERT_WORK,
                 ExistingPeriodicWorkPolicy.UPDATE,
-                periodicWorkRequest
+                periodicRequest
             )
 
-        val testWorkRequest =
+        val testRequest =
             OneTimeWorkRequestBuilder<JobAlertWorker>()
                 .setConstraints(constraints)
                 .build()
@@ -343,12 +382,12 @@ class SettingsActivity : AppCompatActivity() {
             .enqueueUniqueWork(
                 TEST_JOB_ALERT_WORK,
                 ExistingWorkPolicy.REPLACE,
-                testWorkRequest
+                testRequest
             )
 
         Log.d(
             TAG,
-            "Periodic and test job alerts scheduled"
+            "Job alerts scheduled"
         )
     }
 
@@ -378,30 +417,36 @@ class SettingsActivity : AppCompatActivity() {
 
         Toast.makeText(
             this,
-            "Signed out successfully",
+            getString(R.string.signed_out),
             Toast.LENGTH_SHORT
         ).show()
 
-        val mainIntent =
-            Intent(this, MainActivity::class.java)
+        val intent =
+            Intent(
+                this,
+                MainActivity::class.java
+            )
 
-        mainIntent.flags =
+        intent.flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        startActivity(mainIntent)
+        startActivity(intent)
         finish()
     }
 
     private fun openLoginScreen() {
-        val loginIntent =
-            Intent(this, LoginActivity::class.java)
+        val intent =
+            Intent(
+                this,
+                LoginActivity::class.java
+            )
 
-        loginIntent.flags =
+        intent.flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        startActivity(loginIntent)
+        startActivity(intent)
         finish()
     }
 
@@ -409,13 +454,12 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<TextView>(
             R.id.settingsNavHome
         ).setOnClickListener {
-            val homeIntent =
-                Intent(this, HomeActivity::class.java)
-
-            homeIntent.flags =
-                Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-            startActivity(homeIntent)
+            startActivity(
+                Intent(
+                    this,
+                    HomeActivity::class.java
+                )
+            )
             finish()
         }
 
@@ -428,7 +472,6 @@ class SettingsActivity : AppCompatActivity() {
                     SearchActivity::class.java
                 )
             )
-
             finish()
         }
 
@@ -441,7 +484,6 @@ class SettingsActivity : AppCompatActivity() {
                     SavedJobsActivity::class.java
                 )
             )
-
             finish()
         }
 
@@ -454,7 +496,6 @@ class SettingsActivity : AppCompatActivity() {
                     ProfileActivity::class.java
                 )
             )
-
             finish()
         }
     }

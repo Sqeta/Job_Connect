@@ -2,12 +2,6 @@ package com.example.job_connect.data.local
 
 import androidx.room.Entity
 
-/**
- * Represents a saved job stored locally on the user's device.
- *
- * The userId and jobId are combined as the primary key so that
- * different users can cache the same job without creating conflicts.
- */
 @Entity(
     tableName = "cached_saved_jobs",
     primaryKeys = ["userId", "jobId"]
@@ -21,5 +15,9 @@ data class CachedJobEntity(
     val description: String,
     val redirectUrl: String,
     val contractType: String?,
-    val cachedAt: Long = System.currentTimeMillis()
+    val cachedAt: Long =
+        System.currentTimeMillis(),
+
+    // True when this job still needs to be uploaded to Firestore.
+    val pendingSync: Boolean = false
 )

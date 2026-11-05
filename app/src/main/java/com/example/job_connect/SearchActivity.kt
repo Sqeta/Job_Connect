@@ -92,7 +92,9 @@ class SearchActivity : AppCompatActivity() {
 
             if (keyword.isEmpty()) {
                 etKeyword.error =
-                    "Please enter a job title or skill"
+                    getString(
+                        R.string.enter_job_title_error
+                    )
 
                 etKeyword.requestFocus()
                 return@setOnClickListener
@@ -100,7 +102,9 @@ class SearchActivity : AppCompatActivity() {
 
             if (location.isEmpty()) {
                 etLocation.error =
-                    "Please enter a city or province"
+                    getString(
+                        R.string.enter_city_error
+                    )
 
                 etLocation.requestFocus()
                 return@setOnClickListener
@@ -159,16 +163,20 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun loadSearchKeyword() {
-        val keyword = intent
-            .getStringExtra(SEARCH_KEYWORD)
-            .orEmpty()
+        val keyword =
+            intent.getStringExtra(
+                SEARCH_KEYWORD
+            ).orEmpty()
 
         if (keyword.isNotBlank()) {
             etKeyword.setText(keyword)
             etLocation.requestFocus()
 
             tvSearchStatus.text =
-                "Enter a location to search for $keyword jobs."
+                getString(
+                    R.string.enter_location_for_jobs,
+                    keyword
+                )
         }
     }
 
@@ -179,7 +187,11 @@ class SearchActivity : AppCompatActivity() {
         showLoading(true)
 
         tvSearchStatus.text =
-            "Searching for $keyword jobs in $location..."
+            getString(
+                R.string.searching_jobs_in,
+                keyword,
+                location
+            )
 
         jobAdapter.updateJobs(emptyList())
 
@@ -195,89 +207,113 @@ class SearchActivity : AppCompatActivity() {
             resultsPerPage = RESULTS_PER_PAGE,
             keyword = keyword,
             location = location
-        ).enqueue(object : Callback<JobSearchResponse> {
+        ).enqueue(
+            object : Callback<JobSearchResponse> {
 
-            override fun onResponse(
-                call: Call<JobSearchResponse>,
-                response: Response<JobSearchResponse>
-            ) {
-                showLoading(false)
+                override fun onResponse(
+                    call: Call<JobSearchResponse>,
+                    response: Response<JobSearchResponse>
+                ) {
+                    showLoading(false)
 
-                if (response.isSuccessful) {
-                    val jobs =
-                        response.body()?.results.orEmpty()
+                    if (response.isSuccessful) {
+                        val jobs =
+                            response.body()
+                                ?.results
+                                .orEmpty()
 
-                    if (jobs.isEmpty()) {
-                        tvSearchStatus.text =
-                            "No jobs found. Try another title or location."
+                        if (jobs.isEmpty()) {
+                            tvSearchStatus.text =
+                                getString(
+                                    R.string.no_jobs_found
+                                )
 
-                        Log.d(TAG, "No jobs returned")
+                            Log.d(
+                                TAG,
+                                "No jobs returned"
+                            )
+                        } else {
+                            jobAdapter.updateJobs(jobs)
+
+                            tvSearchStatus.text =
+                                getString(
+                                    R.string.job_opportunities_found,
+                                    jobs.size
+                                )
+
+                            Log.d(
+                                TAG,
+                                "${jobs.size} jobs loaded successfully"
+                            )
+                        }
                     } else {
-                        jobAdapter.updateJobs(jobs)
-
                         tvSearchStatus.text =
-                            "${jobs.size} job opportunities found"
+                            getString(
+                                R.string.unable_load_jobs_error_code,
+                                response.code()
+                            )
 
-                        Log.d(
+                        Log.e(
                             TAG,
-                            "${jobs.size} jobs loaded successfully"
+                            "API error: ${response.code()} " +
+                                    response.message()
                         )
                     }
-                } else {
+                }
+
+                override fun onFailure(
+                    call: Call<JobSearchResponse>,
+                    throwable: Throwable
+                ) {
+                    showLoading(false)
+
                     tvSearchStatus.text =
-                        "Unable to load jobs. Error code: ${response.code()}"
+                        getString(
+                            R.string.connection_failed
+                        )
+
+                    Toast.makeText(
+                        this@SearchActivity,
+                        throwable.localizedMessage
+                            ?: getString(
+                                R.string.could_not_connect_adzuna
+                            ),
+                        Toast.LENGTH_LONG
+                    ).show()
 
                     Log.e(
                         TAG,
-                        "API error: ${response.code()} ${response.message()}"
+                        "Adzuna request failed",
+                        throwable
                     )
                 }
             }
-
-            override fun onFailure(
-                call: Call<JobSearchResponse>,
-                throwable: Throwable
-            ) {
-                showLoading(false)
-
-                tvSearchStatus.text =
-                    "Connection failed. Check your internet and try again."
-
-                Toast.makeText(
-                    this@SearchActivity,
-                    throwable.localizedMessage
-                        ?: "Could not connect to Adzuna",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                Log.e(
-                    TAG,
-                    "Adzuna request failed",
-                    throwable
-                )
-            }
-        })
+        )
     }
 
     private fun saveJob(job: Job) {
-        val userId = firebaseAuth.currentUser?.uid
+        val userId =
+            firebaseAuth.currentUser?.uid
 
         if (userId == null) {
             Toast.makeText(
                 this,
-                "Please sign in before saving a job.",
+                getString(
+                    R.string.sign_in_before_saving
+                ),
                 Toast.LENGTH_SHORT
             ).show()
 
             return
         }
 
-        val documentId = job.id.ifBlank {
-            job.redirectUrl
-                .hashCode()
-                .toString()
-                .replace("-", "n")
-        }
+        val documentId =
+            job.id.ifBlank {
+                job.redirectUrl
+                    .hashCode()
+                    .toString()
+                    .replace("-", "n")
+            }
 
         val savedJob = hashMapOf(
             "jobId" to documentId,
@@ -285,7 +321,10 @@ class SearchActivity : AppCompatActivity() {
             "company" to job.companyName(),
             "location" to job.locationName(),
             "contractType" to (
-                    job.contractType ?: "Job opportunity"
+                    job.contractType
+                        ?: getString(
+                            R.string.job_opportunity
+                        )
                     ),
             "description" to job.description,
             "redirectUrl" to job.redirectUrl,
@@ -301,7 +340,9 @@ class SearchActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Toast.makeText(
                     this,
-                    "Job saved successfully",
+                    getString(
+                        R.string.job_saved_successfully
+                    ),
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -313,7 +354,9 @@ class SearchActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(
                     this,
-                    "Could not save job. Please try again.",
+                    getString(
+                        R.string.could_not_save_job
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -325,7 +368,9 @@ class SearchActivity : AppCompatActivity() {
             }
     }
 
-    private fun showLoading(isLoading: Boolean) {
+    private fun showLoading(
+        isLoading: Boolean
+    ) {
         progressBar.visibility =
             if (isLoading) {
                 View.VISIBLE
@@ -337,16 +382,17 @@ class SearchActivity : AppCompatActivity() {
 
         btnSearchJobs.text =
             if (isLoading) {
-                "Searching..."
+                getString(R.string.searching)
             } else {
-                "Search jobs"
+                getString(R.string.search_jobs_button)
             }
     }
 
     private fun hideKeyboard() {
-        val keyboard = getSystemService(
-            INPUT_METHOD_SERVICE
-        ) as InputMethodManager
+        val keyboard =
+            getSystemService(
+                INPUT_METHOD_SERVICE
+            ) as InputMethodManager
 
         keyboard.hideSoftInputFromWindow(
             currentFocus?.windowToken,

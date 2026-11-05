@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="@string/home_title"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Good morning"
+            android:text="@string/good_morning"
             android:textColor="#D7E9FF"
             android:textSize="13sp" />
 
@@ -64,7 +65,7 @@
                 android:background="@drawable/input_background"
                 android:drawableStart="@android:drawable/ic_menu_search"
                 android:drawablePadding="12dp"
-                android:hint="Search jobs or skills"
+                android:hint="@string/search_jobs_or_skills"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="#172033"
@@ -80,7 +81,7 @@
                 android:paddingTop="7dp"
                 android:paddingEnd="14dp"
                 android:paddingBottom="7dp"
-                android:text="Graduate roles"
+                android:text="@string/graduate_roles"
                 android:textColor="#13856E"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -114,7 +115,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Junior Android Developer"
+                        android:text="@string/junior_android_developer"
                         android:textColor="#172033"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -123,7 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Johannesburg | Entry level"
+                        android:text="@string/johannesburg_entry_level"
                         android:textColor="#718096"
                         android:textSize="13sp" />
 
@@ -160,7 +161,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IT Support Intern"
+                        android:text="@string/it_support_intern"
                         android:textColor="#172033"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -169,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Pretoria | Internship"
+                        android:text="@string/pretoria_internship"
                         android:textColor="#718096"
                         android:textSize="13sp" />
 
@@ -201,7 +202,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Home"
+            android:text="@string/nav_home"
             android:textColor="#1769C2"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -212,7 +213,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Search"
+            android:text="@string/nav_search"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -222,7 +223,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Saved"
+            android:text="@string/nav_saved"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -232,7 +233,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Profile"
+            android:text="@string/nav_profile"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 

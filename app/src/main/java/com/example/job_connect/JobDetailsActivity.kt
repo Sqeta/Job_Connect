@@ -9,26 +9,62 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.job_connect.data.local.CachedJobEntity
+import com.example.job_connect.data.local.JobConnectDatabase
+import com.example.job_connect.worker.OfflineJobSyncWorker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class JobDetailsActivity : AppCompatActivity() {
+class JobDetailsActivity :
+    AppCompatActivity() {
 
     companion object {
-        private const val TAG = "JobDetailsActivity"
+        private const val TAG =
+            "JobDetailsActivity"
 
-        const val EXTRA_JOB_ID = "EXTRA_JOB_ID"
-        const val EXTRA_TITLE = "EXTRA_TITLE"
-        const val EXTRA_COMPANY = "EXTRA_COMPANY"
-        const val EXTRA_LOCATION = "EXTRA_LOCATION"
-        const val EXTRA_CONTRACT_TYPE = "EXTRA_CONTRACT_TYPE"
-        const val EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION"
-        const val EXTRA_REDIRECT_URL = "EXTRA_REDIRECT_URL"
+        private const val OFFLINE_SYNC_WORK =
+            "offline_saved_job_sync"
+
+        const val EXTRA_JOB_ID =
+            "EXTRA_JOB_ID"
+
+        const val EXTRA_TITLE =
+            "EXTRA_TITLE"
+
+        const val EXTRA_COMPANY =
+            "EXTRA_COMPANY"
+
+        const val EXTRA_LOCATION =
+            "EXTRA_LOCATION"
+
+        const val EXTRA_CONTRACT_TYPE =
+            "EXTRA_CONTRACT_TYPE"
+
+        const val EXTRA_DESCRIPTION =
+            "EXTRA_DESCRIPTION"
+
+        const val EXTRA_REDIRECT_URL =
+            "EXTRA_REDIRECT_URL"
     }
 
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
+    private lateinit var firebaseAuth:
+            FirebaseAuth
+
+    private lateinit var firestore:
+            FirebaseFirestore
+
+    private lateinit var database:
+            JobConnectDatabase
 
     private var jobId = ""
     private var title = ""
@@ -38,12 +74,24 @@ class JobDetailsActivity : AppCompatActivity() {
     private var description = ""
     private var redirectUrl = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_job_details)
+        setContentView(
+            R.layout.activity_job_details
+        )
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        firebaseAuth =
+            FirebaseAuth.getInstance()
+
+        firestore =
+            FirebaseFirestore.getInstance()
+
+        database =
+            JobConnectDatabase.getDatabase(
+                applicationContext
+            )
 
         readJobInformation()
         displayJobInformation()
@@ -52,47 +100,76 @@ class JobDetailsActivity : AppCompatActivity() {
     }
 
     private fun readJobInformation() {
-        jobId = intent.getStringExtra(EXTRA_JOB_ID).orEmpty()
-        title = intent.getStringExtra(EXTRA_TITLE)
-            ?: "Job opportunity"
+        jobId =
+            intent
+                .getStringExtra(EXTRA_JOB_ID)
+                .orEmpty()
 
-        company = intent.getStringExtra(EXTRA_COMPANY)
-            ?: "Company not provided"
+        title =
+            intent
+                .getStringExtra(EXTRA_TITLE)
+                ?: "Job opportunity"
 
-        location = intent.getStringExtra(EXTRA_LOCATION)
-            ?: "Location not provided"
+        company =
+            intent
+                .getStringExtra(EXTRA_COMPANY)
+                ?: "Company not provided"
 
-        contractType = intent
-            .getStringExtra(EXTRA_CONTRACT_TYPE)
-            ?: "Job opportunity"
+        location =
+            intent
+                .getStringExtra(EXTRA_LOCATION)
+                ?: "Location not provided"
 
-        description = intent
-            .getStringExtra(EXTRA_DESCRIPTION)
-            ?: "No job description was provided."
+        contractType =
+            intent
+                .getStringExtra(
+                    EXTRA_CONTRACT_TYPE
+                )
+                ?: "Job opportunity"
 
-        redirectUrl = intent
-            .getStringExtra(EXTRA_REDIRECT_URL)
-            .orEmpty()
+        description =
+            intent
+                .getStringExtra(
+                    EXTRA_DESCRIPTION
+                )
+                ?: "No job description was provided."
+
+        redirectUrl =
+            intent
+                .getStringExtra(
+                    EXTRA_REDIRECT_URL
+                )
+                .orEmpty()
 
         if (jobId.isBlank()) {
-            jobId = redirectUrl.hashCode()
-                .toString()
-                .replace("-", "n")
+            jobId =
+                redirectUrl
+                    .hashCode()
+                    .toString()
+                    .replace("-", "n")
         }
     }
 
     private fun displayJobInformation() {
         val headerTitle =
-            findViewById<TextView>(R.id.tvDetailHeaderTitle)
+            findViewById<TextView>(
+                R.id.tvDetailHeaderTitle
+            )
 
         val jobIcon =
-            findViewById<TextView>(R.id.tvDetailIcon)
+            findViewById<TextView>(
+                R.id.tvDetailIcon
+            )
 
         val jobTitle =
-            findViewById<TextView>(R.id.tvDetailTitle)
+            findViewById<TextView>(
+                R.id.tvDetailTitle
+            )
 
         val jobCompany =
-            findViewById<TextView>(R.id.tvDetailCompany)
+            findViewById<TextView>(
+                R.id.tvDetailCompany
+            )
 
         val jobLocationType =
             findViewById<TextView>(
@@ -109,28 +186,38 @@ class JobDetailsActivity : AppCompatActivity() {
         jobCompany.text = company
 
         jobLocationType.text =
-            "$location | ${formatContractType(contractType)}"
+            "$location | ${
+                formatContractType(
+                    contractType
+                )
+            }"
 
-        jobIcon.text = company
-            .firstOrNull()
-            ?.uppercase()
-            ?: "J"
+        jobIcon.text =
+            company
+                .firstOrNull()
+                ?.uppercase()
+                ?: "J"
 
-        jobDescription.text = Html.fromHtml(
-            description,
-            Html.FROM_HTML_MODE_LEGACY
-        )
+        jobDescription.text =
+            Html.fromHtml(
+                description,
+                Html.FROM_HTML_MODE_LEGACY
+            )
     }
 
     private fun setupButtons() {
         val saveButton =
-            findViewById<Button>(R.id.btnDetailSave)
+            findViewById<Button>(
+                R.id.btnDetailSave
+            )
 
         val applyButton =
-            findViewById<Button>(R.id.btnApplySource)
+            findViewById<Button>(
+                R.id.btnApplySource
+            )
 
         saveButton.setOnClickListener {
-            saveJob()
+            saveJobOfflineFirst()
         }
 
         applyButton.setOnClickListener {
@@ -138,8 +225,9 @@ class JobDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveJob() {
-        val userId = firebaseAuth.currentUser?.uid
+    private fun saveJobOfflineFirst() {
+        val userId =
+            firebaseAuth.currentUser?.uid
 
         if (userId == null) {
             Toast.makeText(
@@ -151,49 +239,102 @@ class JobDetailsActivity : AppCompatActivity() {
             return
         }
 
-        val savedJob = hashMapOf(
-            "jobId" to jobId,
-            "title" to title,
-            "company" to company,
-            "location" to location,
-            "contractType" to contractType,
-            "description" to description,
-            "redirectUrl" to redirectUrl,
-            "savedAt" to FieldValue.serverTimestamp()
-        )
+        val cachedJob =
+            CachedJobEntity(
+                userId = userId,
+                jobId = jobId,
+                title = title,
+                company = company,
+                location = location,
+                description = description,
+                redirectUrl = redirectUrl,
+                contractType =
+                    contractType.ifBlank {
+                        null
+                    },
+                cachedAt =
+                    System.currentTimeMillis(),
+                pendingSync = true
+            )
 
-        firestore
-            .collection("users")
-            .document(userId)
-            .collection("savedJobs")
-            .document(jobId)
-            .set(savedJob)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    this,
-                    "Job saved successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+        lifecycleScope.launch(
+            Dispatchers.IO
+        ) {
+            try {
+                database
+                    .cachedJobDao()
+                    .insertJob(cachedJob)
 
-                Log.d(TAG, "Job saved: $jobId")
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Could not save this job.",
-                    Toast.LENGTH_LONG
-                ).show()
+                enqueueOfflineSync()
 
+                withContext(
+                    Dispatchers.Main
+                ) {
+                    Toast.makeText(
+                        this@JobDetailsActivity,
+                        "Job saved. It will sync automatically when connected.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                Log.d(
+                    TAG,
+                    "Job saved locally: $jobId"
+                )
+            } catch (exception: Exception) {
                 Log.e(
                     TAG,
-                    "Failed to save job",
+                    "Failed to save job locally",
                     exception
                 )
+
+                withContext(
+                    Dispatchers.Main
+                ) {
+                    Toast.makeText(
+                        this@JobDetailsActivity,
+                        "Could not save this job.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
+        }
+    }
+
+    private fun enqueueOfflineSync() {
+        val constraints =
+            Constraints.Builder()
+                .setRequiredNetworkType(
+                    NetworkType.CONNECTED
+                )
+                .build()
+
+        val syncRequest =
+            OneTimeWorkRequestBuilder<
+                    OfflineJobSyncWorker
+                    >()
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager
+            .getInstance(
+                applicationContext
+            )
+            .enqueueUniqueWork(
+                OFFLINE_SYNC_WORK,
+                ExistingWorkPolicy.REPLACE,
+                syncRequest
+            )
+
+        Log.d(
+            TAG,
+            "Offline synchronisation scheduled"
+        )
     }
 
     private fun recordApplicationAndOpenSource() {
-        val userId = firebaseAuth.currentUser?.uid
+        val userId =
+            firebaseAuth.currentUser?.uid
 
         if (redirectUrl.isBlank()) {
             Toast.makeText(
@@ -210,15 +351,17 @@ class JobDetailsActivity : AppCompatActivity() {
             return
         }
 
-        val application = hashMapOf(
-            "jobId" to jobId,
-            "title" to title,
-            "company" to company,
-            "location" to location,
-            "redirectUrl" to redirectUrl,
-            "status" to "Applied",
-            "appliedAt" to FieldValue.serverTimestamp()
-        )
+        val application =
+            hashMapOf(
+                "jobId" to jobId,
+                "title" to title,
+                "company" to company,
+                "location" to location,
+                "redirectUrl" to redirectUrl,
+                "status" to "Applied",
+                "appliedAt" to
+                        FieldValue.serverTimestamp()
+            )
 
         firestore
             .collection("users")
@@ -247,10 +390,11 @@ class JobDetailsActivity : AppCompatActivity() {
 
     private fun openSourceWebsite() {
         try {
-            val browserIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(redirectUrl)
-            )
+            val browserIntent =
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(redirectUrl)
+                )
 
             startActivity(browserIntent)
         } catch (exception: Exception) {
@@ -268,7 +412,9 @@ class JobDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun formatContractType(type: String): String {
+    private fun formatContractType(
+        type: String
+    ): String {
         return type
             .replace("_", " ")
             .replaceFirstChar { character ->
@@ -280,13 +426,16 @@ class JobDetailsActivity : AppCompatActivity() {
         findViewById<TextView>(
             R.id.detailsNavHome
         ).setOnClickListener {
-            val intent =
-                Intent(this, HomeActivity::class.java)
+            val homeIntent =
+                Intent(
+                    this,
+                    HomeActivity::class.java
+                )
 
-            intent.flags =
+            homeIntent.flags =
                 Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-            startActivity(intent)
+            startActivity(homeIntent)
             finish()
         }
 
@@ -310,11 +459,12 @@ class JobDetailsActivity : AppCompatActivity() {
         findViewById<TextView>(
             R.id.detailsNavProfile
         ).setOnClickListener {
-            Toast.makeText(
-                this,
-                "Profile page is coming soon.",
-                Toast.LENGTH_SHORT
-            ).show()
+            startActivity(
+                Intent(
+                    this,
+                    ProfileActivity::class.java
+                )
+            )
         }
     }
 }

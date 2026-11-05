@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search Jobs"
+            android:text="@string/search_jobs_title"
             android:textColor="#FFFFFF"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Find your next opportunity"
+            android:text="@string/search_jobs_subtitle"
             android:textColor="#DCEBFF"
             android:textSize="14sp" />
 
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="@drawable/input_background"
-            android:hint="Job title or skill"
+            android:hint="@string/job_title_or_skill"
             android:inputType="text"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -75,7 +75,7 @@
             android:layout_height="52dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/input_background"
-            android:hint="City or province"
+            android:hint="@string/city_or_province"
             android:inputType="textCapWords"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -90,7 +90,7 @@
             android:layout_height="52dp"
             android:layout_marginTop="14dp"
             android:background="@drawable/button_primary"
-            android:text="Search jobs"
+            android:text="@string/search_jobs_button"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
@@ -116,7 +116,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Enter a job title and location to begin."
+        android:text="@string/search_start_message"
         android:textColor="#5F6B7A"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +155,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Home"
+            android:text="@string/nav_home"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -165,7 +165,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Search"
+            android:text="@string/nav_search"
             android:textColor="#1769C2"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -176,7 +176,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Saved"
+            android:text="@string/nav_saved"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -186,7 +186,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Profile"
+            android:text="@string/nav_profile"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 

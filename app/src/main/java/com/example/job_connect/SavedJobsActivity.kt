@@ -158,11 +158,15 @@ class SavedJobsActivity : AppCompatActivity() {
                 val savedJobs =
                     querySnapshot.documents.map { document ->
                         Job(
-                            id = document.getString("jobId")
-                                ?: document.id,
+                            id =
+                                document.getString("jobId")
+                                    ?: document.id,
 
-                            title = document.getString("title")
-                                ?: "Job opportunity",
+                            title =
+                                document.getString("title")
+                                    ?: getString(
+                                        R.string.job_opportunity
+                                    ),
 
                             description =
                                 document.getString("description")
@@ -175,17 +179,23 @@ class SavedJobsActivity : AppCompatActivity() {
                             contractType =
                                 document.getString("contractType"),
 
-                            company = JobCompany(
-                                displayName =
-                                    document.getString("company")
-                                        ?: "Company not provided"
-                            ),
+                            company =
+                                JobCompany(
+                                    displayName =
+                                        document.getString("company")
+                                            ?: getString(
+                                                R.string.company_not_provided
+                                            )
+                                ),
 
-                            location = JobLocation(
-                                displayName =
-                                    document.getString("location")
-                                        ?: "Location not provided"
-                            )
+                            location =
+                                JobLocation(
+                                    displayName =
+                                        document.getString("location")
+                                            ?: getString(
+                                                R.string.location_not_provided
+                                            )
+                                )
                         )
                     }
 
@@ -229,10 +239,14 @@ class SavedJobsActivity : AppCompatActivity() {
                             title = job.title,
                             company =
                                 job.company?.displayName
-                                    ?: "Company not provided",
+                                    ?: getString(
+                                        R.string.company_not_provided
+                                    ),
                             location =
                                 job.location?.displayName
-                                    ?: "Location not provided",
+                                    ?: getString(
+                                        R.string.location_not_provided
+                                    ),
                             description = job.description,
                             redirectUrl = job.redirectUrl,
                             contractType = job.contractType
@@ -283,14 +297,16 @@ class SavedJobsActivity : AppCompatActivity() {
                                 cachedJob.redirectUrl,
                             contractType =
                                 cachedJob.contractType,
-                            company = JobCompany(
-                                displayName =
-                                    cachedJob.company
-                            ),
-                            location = JobLocation(
-                                displayName =
-                                    cachedJob.location
-                            )
+                            company =
+                                JobCompany(
+                                    displayName =
+                                        cachedJob.company
+                                ),
+                            location =
+                                JobLocation(
+                                    displayName =
+                                        cachedJob.location
+                                )
                         )
                     }
 
@@ -317,11 +333,15 @@ class SavedJobsActivity : AppCompatActivity() {
                         View.VISIBLE
 
                     tvSavedJobsStatus.text =
-                        "Could not load saved jobs."
+                        getString(
+                            R.string.could_not_load_saved_jobs
+                        )
 
                     Toast.makeText(
                         this,
-                        "Could not load saved jobs.",
+                        getString(
+                            R.string.could_not_load_saved_jobs
+                        ),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -345,9 +365,13 @@ class SavedJobsActivity : AppCompatActivity() {
 
             tvSavedJobsStatus.text =
                 if (loadedFromCache) {
-                    "No cached saved jobs are available."
+                    getString(
+                        R.string.no_cached_saved_jobs
+                    )
                 } else {
-                    "You have not saved any jobs yet."
+                    getString(
+                        R.string.no_saved_jobs
+                    )
                 }
         } else {
             recyclerSavedJobs.visibility =
@@ -362,7 +386,9 @@ class SavedJobsActivity : AppCompatActivity() {
 
             if (loadedFromCache) {
                 tvSavedJobsStatus.text =
-                    "Offline mode: showing saved jobs from this device."
+                    getString(
+                        R.string.offline_mode_saved_jobs
+                    )
             }
 
             Log.d(

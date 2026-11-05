@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9FC">
+    android:background="@color/app_background">
 
     <LinearLayout
         android:id="@+id/loginHeader"
         android:layout_width="0dp"
         android:layout_height="96dp"
-        android:background="#1769C2"
+        android:background="@color/header_color"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingStart="22dp"
@@ -23,8 +24,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textColor="#FFFFFF"
+            android:text="@string/login_title"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -32,8 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Welcome back to JobConnect"
-            android:textColor="#D7E9FF"
+            android:text="@string/login_subtitle"
+            android:textColor="@color/header_secondary_text"
             android:textSize="13sp" />
 
     </LinearLayout>
@@ -41,6 +42,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/app_background"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,28 +54,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="22dp"
-            android:paddingTop="32dp"
+            android:paddingTop="24dp"
             android:paddingEnd="22dp"
             android:paddingBottom="24dp">
 
-            <TextView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+            <ImageView
+                android:layout_width="82dp"
+                android:layout_height="82dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/button_primary"
-                android:gravity="center"
-                android:text="J"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:contentDescription="@string/jobconnect_logo"
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
-                android:text="JobConnect"
-                android:textColor="#172033"
+                android:layout_marginTop="10dp"
+                android:text="@string/jobconnect_name"
+                android:textColor="@color/primary_text"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -81,28 +79,32 @@
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="22dp"
                 android:autofillHints="emailAddress"
                 android:background="@drawable/input_background"
-                android:hint="Email address"
+                android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="#172033"
-                android:textColorHint="#718096"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/hint_text"
                 android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="12dp"
                 android:autofillHints="password"
                 android:background="@drawable/input_background"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="#172033"
-                android:textColorHint="#718096"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/hint_text"
                 android:textSize="15sp" />
 
             <TextView
@@ -111,8 +113,8 @@
                 android:layout_height="48dp"
                 android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:text="Forgot password?"
-                android:textColor="#1769C2"
+                android:text="@string/forgot_password"
+                android:textColor="@color/header_color"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -121,9 +123,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@drawable/button_primary"
-                android:text="Sign in"
+                android:text="@string/sign_in"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/border_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/or"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/border_color" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGoogleSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/input_background"
+                android:text="@string/continue_with_google"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_text"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:backgroundTint="@null" />
@@ -132,10 +178,10 @@
                 android:id="@+id/tvGoToRegister"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Don't have an account? Create account"
-                android:textColor="#1769C2"
+                android:text="@string/create_account_prompt"
+                android:textColor="@color/header_color"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 

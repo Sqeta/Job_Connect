@@ -104,11 +104,15 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun loadProfile() {
-        val currentUser = firebaseAuth.currentUser
+        val currentUser =
+            firebaseAuth.currentUser
 
         if (currentUser == null) {
             startActivity(
-                Intent(this, LoginActivity::class.java)
+                Intent(
+                    this,
+                    LoginActivity::class.java
+                )
             )
 
             finish()
@@ -118,7 +122,10 @@ class ProfileActivity : AppCompatActivity() {
         showLoading(true)
 
         tvProfileEmail.text =
-            currentUser.email ?: "Email not provided"
+            currentUser.email
+                ?: getString(
+                    R.string.email_not_provided
+                )
 
         firestore
             .collection("users")
@@ -130,7 +137,9 @@ class ProfileActivity : AppCompatActivity() {
                 val fullName =
                     document.getString("fullName")
                         ?: currentUser.displayName
-                        ?: "Job Seeker"
+                        ?: getString(
+                            R.string.job_seeker
+                        )
 
                 val education =
                     document.getString("education")
@@ -143,49 +152,52 @@ class ProfileActivity : AppCompatActivity() {
 
                 val preferredLocations =
                     convertListToText(
-                        document.get("preferredLocations")
+                        document.get(
+                            "preferredLocations"
+                        )
                     )
 
                 val preferredJobTypes =
                     convertListToText(
-                        document.get("preferredJobTypes")
+                        document.get(
+                            "preferredJobTypes"
+                        )
                     )
 
                 tvProfileName.text = fullName
 
                 tvProfileIcon.text =
-                    fullName.firstOrNull()
+                    fullName
+                        .firstOrNull()
                         ?.uppercase()
                         ?: "J"
 
                 tvProfileSkills.text =
-                    if (skills.isBlank()) {
-                        if (education.isBlank()) {
-                            "No skills added yet"
-                        } else {
-                            "Education: $education"
-                        }
-                    } else {
-                        if (education.isBlank()) {
-                            skills
-                        } else {
-                            "$skills\nEducation: $education"
-                        }
-                    }
+                    createSkillsText(
+                        skills = skills,
+                        education = education
+                    )
 
-                val preferences = buildList {
-                    if (preferredJobTypes.isNotBlank()) {
-                        add(preferredJobTypes)
-                    }
+                val preferences =
+                    buildList {
+                        if (
+                            preferredJobTypes.isNotBlank()
+                        ) {
+                            add(preferredJobTypes)
+                        }
 
-                    if (preferredLocations.isNotBlank()) {
-                        add(preferredLocations)
-                    }
-                }.joinToString(" | ")
+                        if (
+                            preferredLocations.isNotBlank()
+                        ) {
+                            add(preferredLocations)
+                        }
+                    }.joinToString(" | ")
 
                 tvProfilePreferences.text =
                     preferences.ifBlank {
-                        "No preferences added yet"
+                        getString(
+                            R.string.no_preferences_added
+                        )
                     }
 
                 Log.d(
@@ -198,7 +210,9 @@ class ProfileActivity : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "Could not load your profile.",
+                    getString(
+                        R.string.could_not_load_profile
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -210,12 +224,58 @@ class ProfileActivity : AppCompatActivity() {
             }
     }
 
-    private fun convertListToText(value: Any?): String {
+    private fun createSkillsText(
+        skills: String,
+        education: String
+    ): String {
+        val educationText =
+            if (education.isNotBlank()) {
+                getString(
+                    R.string.education_format,
+                    education
+                )
+            } else {
+                ""
+            }
+
+        return when {
+            skills.isBlank() &&
+                    education.isBlank() -> {
+                getString(
+                    R.string.no_skills_added
+                )
+            }
+
+            skills.isBlank() -> {
+                educationText
+            }
+
+            education.isBlank() -> {
+                skills
+            }
+
+            else -> {
+                getString(
+                    R.string.skills_and_education,
+                    skills,
+                    educationText
+                )
+            }
+        }
+    }
+
+    private fun convertListToText(
+        value: Any?
+    ): String {
         return when (value) {
-            is List<*> -> value
-                .filterIsInstance<String>()
-                .filter { it.isNotBlank() }
-                .joinToString(", ")
+            is List<*> -> {
+                value
+                    .filterIsInstance<String>()
+                    .filter {
+                        it.isNotBlank()
+                    }
+                    .joinToString(", ")
+            }
 
             is String -> value
 
@@ -223,9 +283,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-
-
-    private fun showLoading(isLoading: Boolean) {
+    private fun showLoading(
+        isLoading: Boolean
+    ) {
         progressProfile.visibility =
             if (isLoading) {
                 View.VISIBLE
@@ -246,7 +306,10 @@ class ProfileActivity : AppCompatActivity() {
             R.id.profileNavHome
         ).setOnClickListener {
             val homeIntent =
-                Intent(this, HomeActivity::class.java)
+                Intent(
+                    this,
+                    HomeActivity::class.java
+                )
 
             homeIntent.flags =
                 Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -259,7 +322,10 @@ class ProfileActivity : AppCompatActivity() {
             R.id.profileNavSearch
         ).setOnClickListener {
             startActivity(
-                Intent(this, SearchActivity::class.java)
+                Intent(
+                    this,
+                    SearchActivity::class.java
+                )
             )
         }
 
@@ -277,7 +343,7 @@ class ProfileActivity : AppCompatActivity() {
         findViewById<TextView>(
             R.id.profileNavProfile
         ).setOnClickListener {
-            // Already on the Profile page.
+            // The user is already on the Profile page.
         }
     }
 }

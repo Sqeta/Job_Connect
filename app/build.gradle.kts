@@ -7,7 +7,8 @@ plugins {
 }
 
 val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
+val localPropertiesFile =
+    rootProject.file("local.properties")
 
 if (localPropertiesFile.exists()) {
     localPropertiesFile.inputStream().use { inputStream ->
@@ -16,10 +17,16 @@ if (localPropertiesFile.exists()) {
 }
 
 val adzunaAppId =
-    localProperties.getProperty("ADZUNA_APP_ID", "")
+    localProperties.getProperty(
+        "ADZUNA_APP_ID",
+        ""
+    )
 
 val adzunaAppKey =
-    localProperties.getProperty("ADZUNA_APP_KEY", "")
+    localProperties.getProperty(
+        "ADZUNA_APP_KEY",
+        ""
+    )
 
 android {
     namespace = "com.example.job_connect"
@@ -31,7 +38,9 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.job_connect"
+        applicationId =
+            "com.example.job_connect"
+
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -71,51 +80,124 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility =
+            JavaVersion.VERSION_11
+
+        targetCompatibility =
+            JavaVersion.VERSION_11
     }
 }
 
 dependencies {
-    // WorkManager background job alerts
-    implementation(libs.androidx.work.runtime.ktx)
-    androidTestImplementation(libs.androidx.work.testing)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    // Room local database
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-    testImplementation(libs.androidx.room.testing)
+
+    // Android
+    implementation(
+        libs.androidx.core.ktx
+    )
+
+    implementation(
+        libs.androidx.appcompat
+    )
+
+    implementation(
+        libs.material
+    )
+
+    implementation(
+        libs.androidx.activity
+    )
+
+    implementation(
+        libs.androidx.constraintlayout
+    )
 
     implementation(
         "androidx.recyclerview:recyclerview:1.4.0"
     )
 
-    // Firebase
     implementation(
-        platform("com.google.firebase:firebase-bom:34.19.0")
+        "androidx.lifecycle:lifecycle-runtime-ktx:2.9.4"
     )
+
+    // Credential Manager and Google Sign-In
+    implementation(
+        "androidx.credentials:credentials:1.3.0"
+    )
+
+    implementation(
+        "androidx.credentials:credentials-play-services-auth:1.3.0"
+    )
+
+    implementation(
+        "com.google.android.libraries.identity.googleid:googleid:1.1.1"
+    )
+
+    // Firebase BoM
+    implementation(
+        platform(
+            "com.google.firebase:firebase-bom:34.19.0"
+        )
+    )
+
+    // Firebase Authentication
     implementation(
         "com.google.firebase:firebase-auth"
     )
+
+    // Firebase Firestore
     implementation(
         "com.google.firebase:firebase-firestore"
     )
 
-    // Retrofit REST API
+    // Firebase Cloud Messaging push notifications
+    implementation(
+        "com.google.firebase:firebase-messaging"
+    )
+
+    // WorkManager
+    implementation(
+        libs.androidx.work.runtime.ktx
+    )
+
+    androidTestImplementation(
+        libs.androidx.work.testing
+    )
+
+    // Room local database
+    implementation(
+        libs.androidx.room.runtime
+    )
+
+    implementation(
+        libs.androidx.room.ktx
+    )
+
+    kapt(
+        libs.androidx.room.compiler
+    )
+
+    testImplementation(
+        libs.androidx.room.testing
+    )
+
+    // Retrofit
     implementation(
         "com.squareup.retrofit2:retrofit:3.0.0"
     )
+
     implementation(
         "com.squareup.retrofit2:converter-gson:3.0.0"
     )
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    // Testing
+    testImplementation(
+        libs.junit
+    )
+
+    androidTestImplementation(
+        libs.androidx.junit
+    )
+
     androidTestImplementation(
         libs.androidx.espresso.core
     )

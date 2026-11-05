@@ -5,16 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-/**
- * Provides the database operations for locally cached saved jobs.
- */
 @Dao
 interface CachedJobDao {
 
-    /**
-     * Returns all cached jobs belonging to the selected user.
-     * Newer cached jobs are shown first.
-     */
     @Query(
         """
         SELECT * FROM cached_saved_jobs
@@ -26,9 +19,23 @@ interface CachedJobDao {
         userId: String
     ): List<CachedJobEntity>
 
-    /**
-     * Inserts jobs and replaces a job if it already exists.
-     */
+    @Query(
+        """
+        SELECT * FROM cached_saved_jobs
+        WHERE pendingSync = 1
+        ORDER BY cachedAt ASC
+        """
+    )
+    fun getPendingSyncJobs():
+            List<CachedJobEntity>
+
+    @Insert(
+        onConflict = OnConflictStrategy.REPLACE
+    )
+    fun insertJob(
+        job: CachedJobEntity
+    )
+
     @Insert(
         onConflict = OnConflictStrategy.REPLACE
     )
@@ -36,9 +43,19 @@ interface CachedJobDao {
         jobs: List<CachedJobEntity>
     )
 
-    /**
-     * Removes the user's old cached jobs before storing fresh data.
-     */
+    @Query(
+        """
+        UPDATE cached_saved_jobs
+        SET pendingSync = 0
+        WHERE userId = :userId
+        AND jobId = :jobId
+        """
+    )
+    fun markJobAsSynced(
+        userId: String,
+        jobId: String
+    )
+
     @Query(
         """
         DELETE FROM cached_saved_jobs
@@ -49,9 +66,6 @@ interface CachedJobDao {
         userId: String
     )
 
-    /**
-     * Returns the number of cached jobs belonging to the user.
-     */
     @Query(
         """
         SELECT COUNT(*) FROM cached_saved_jobs

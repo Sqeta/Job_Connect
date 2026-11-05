@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saved Jobs"
+            android:text="@string/saved_jobs_title"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Your saved opportunities"
+            android:text="@string/saved_jobs_subtitle"
             android:textColor="#D7E9FF"
             android:textSize="13sp" />
 
@@ -56,7 +56,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:gravity="center"
-        android:text="You have not saved any jobs yet."
+        android:text="@string/no_saved_jobs"
         android:textColor="#5F6B7A"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/btnOpenTracker"
@@ -84,7 +84,7 @@
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_primary"
-        android:text="View application tracker"
+        android:text="@string/view_application_tracker"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
@@ -113,7 +113,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Home"
+            android:text="@string/nav_home"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -123,7 +123,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Search"
+            android:text="@string/nav_search"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 
@@ -133,7 +133,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Saved"
+            android:text="@string/nav_saved"
             android:textColor="#1769C2"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -144,7 +144,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="●&#10;Profile"
+            android:text="@string/nav_profile"
             android:textColor="#94A3B8"
             android:textSize="12sp" />
 

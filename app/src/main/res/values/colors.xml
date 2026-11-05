@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
 
-    <!-- Original Android theme colours -->
+<resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -10,19 +9,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- JobConnect colours -->
-    <color name="primary_blue">#1769C2</color>
-    <color name="primary_blue_dark">#0F4F96</color>
-    <color name="header_text">#FFFFFF</color>
-    <color name="header_subtitle">#D7E9FF</color>
-    <color name="screen_background">#F7F9FC</color>
+    <color name="app_background">#F7F9FC</color>
     <color name="surface_color">#FFFFFF</color>
-    <color name="input_color">#FFFFFF</color>
-    <color name="border_color">#CBD5E1</color>
-    <color name="text_primary">#172033</color>
-    <color name="text_secondary">#718096</color>
-    <color name="navigation_inactive">#94A3B8</color>
-    <color name="success_background">#D9F4EE</color>
-    <color name="success_text">#13856E</color>
-
+    <color name="primary_text">#172033</color>
+    <color name="secondary_text">#5F6B7A</color>
+    <color name="hint_text">#718096</color>
+    <color name="border_color">#D8E0EA</color>
+    <color name="input_border_color">#BCC8D6</color>
+    <color name="header_color">#1769C2</color>
+    <color name="header_secondary_text">#D7E9FF</color>
+    <color name="danger_text">#C62828</color>
+    <color name="inactive_navigation">#94A3B8</color>
 </resources>
