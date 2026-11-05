@@ -293,7 +293,7 @@ The application has not been publicly published to Google Play. The Play Console
 
 ## Release Notes
 
-### JobConnect Final PoE Release – Version 1.0
+### JobConnect Final PoE Release - Version 1.0
 
 This release represents the completed JobConnect Portfolio of Evidence application.
 
