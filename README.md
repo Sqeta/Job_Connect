@@ -191,19 +191,6 @@ Firebase Cloud Messaging handles remote push messages, while WorkManager handles
 
 The Adzuna Application ID and Application Key are not written directly into the Kotlin source code.
 
-Add the following values to the root `local.properties` file:
-
-```properties
-ADZUNA_APP_ID=your_adzuna_application_id
-ADZUNA_APP_KEY=your_adzuna_application_key
-```
-
-Android Studio automatically adds the local SDK path to this same file.
-
-The Gradle configuration reads these values and makes them available through `BuildConfig`.
-
-Do not upload `local.properties` to GitHub because it contains local configuration and private API credentials.
-
 ### Firebase Configuration
 
 To connect the application to Firebase:
