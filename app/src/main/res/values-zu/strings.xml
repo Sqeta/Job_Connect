@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">JobConnect</string>
+
+    <string name="settings">Izilungiselelo</string>
+    <string name="settings_subtitle">Yenza i-JobConnect ibe ngeyakho</string>
+    <string name="language">Ulimi</string>
+    <string name="appearance">Ukubukeka</string>
+    <string name="use_dark_mode">Sebenzisa imodi emnyama</string>
+    <string name="job_alerts">Izaziso zemisebenzi</string>
+    <string name="job_alert_description">Ngazise ngamathuba emisebenzi afanele</string>
+    <string name="save_settings">Londoloza izilungiselelo</string>
+    <string name="saving">Iyalondoloza…</string>
+    <string name="sign_out">Phuma</string>
+
+    <string name="nav_home">●\nIkhaya</string>
+    <string name="nav_search">●\nSesha</string>
+    <string name="nav_saved">●\nOkulondoloziwe</string>
+    <string name="nav_profile">●\nIphrofayela</string>
+
+    <string name="settings_saved">Izilungiselelo zilondolozwe ngempumelelo.</string>
+    <string name="settings_save_failed">Izilungiselelo azikwazanga ukulondolozwa.</string>
+    <string name="settings_load_failed">Izilungiselelo zakho azikwazanga ukulayishwa.</string>
+    <string name="job_alerts_enabled">Izaziso zemisebenzi zivuliwe.</string>
+    <string name="notification_permission_required">Imvume yezaziso iyadingeka ukuze uthole izaziso zemisebenzi.</string>
+    <string name="signed_out">Uphume ngempumelelo.</string>
+
+    <string name="login_title">Ngena</string>
+    <string name="login_subtitle">Siyakwamukela futhi ku-JobConnect</string>
+    <string name="jobconnect_logo">Ilogo ye-JobConnect</string>
+    <string name="jobconnect_name">JobConnect</string>
+    <string name="email_address">Ikheli le-imeyili</string>
+    <string name="password">Iphasiwedi</string>
+    <string name="forgot_password">Ukhohlwe iphasiwedi?</string>
+    <string name="sign_in">Ngena</string>
+    <string name="or">NOMA</string>
+    <string name="continue_with_google">Qhubeka nge-Google</string>
+    <string name="create_account_prompt">Awunayo i-akhawunti? Dala i-akhawunti</string>
+
+    <string name="register_title">Bhalisa</string>
+    <string name="register_subtitle">Yakha iphrofayela yakho ye-JobConnect</string>
+    <string name="full_name">Igama eligcwele</string>
+    <string name="confirm_password">Qinisekisa iphasiwedi</string>
+    <string name="create_account">Dala i-akhawunti</string>
+    <string name="already_have_account">Usunayo i-akhawunti? Ngena</string>
+
+    <string name="home_title">Ikhaya</string>
+    <string name="good_morning">Sawubona</string>
+    <string name="search_jobs_or_skills">Sesha imisebenzi noma amakhono</string>
+    <string name="graduate_roles">Imisebenzi yabathweswe iziqu</string>
+    <string name="junior_android_developer">Umthuthukisi we-Android osaqalayo</string>
+    <string name="johannesburg_entry_level">Johannesburg | Izinga labaqalayo</string>
+    <string name="it_support_intern">Umfundi wokwesekwa kwe-IT</string>
+    <string name="pretoria_internship">Pretoria | Ukuqeqeshwa emsebenzini</string>
+
+    <string name="good_afternoon">Ntambama enhle</string>
+    <string name="good_evening">Kusihlwa okuhle</string>
+    <string name="job_seeker">Ofuna umsebenzi</string>
+    <string name="greeting_with_name">%1$s, %2$s</string>
+
+    <string name="search_jobs_title">Sesha imisebenzi</string>
+    <string name="search_jobs_subtitle">Thola ithuba lakho elilandelayo</string>
+    <string name="job_title_or_skill">Isihloko somsebenzi noma ikhono</string>
+    <string name="city_or_province">Idolobha noma isifundazwe</string>
+    <string name="search_jobs_button">Sesha imisebenzi</string>
+    <string name="search_start_message">Faka isihloko somsebenzi nendawo ukuze uqale.</string>
+
+    <string name="enter_job_title_error">Sicela ufake isihloko somsebenzi noma ikhono</string>
+    <string name="enter_city_error">Sicela ufake idolobha noma isifundazwe</string>
+    <string name="enter_location_for_jobs">Faka indawo ukuze useshe imisebenzi ye-%1$s.</string>
+    <string name="searching_jobs_in">Kuseshwa imisebenzi ye-%1$s e-%2$s…</string>
+    <string name="no_jobs_found">Ayikho imisebenzi etholakele. Zama esinye isihloko noma indawo.</string>
+    <string name="job_opportunities_found">Kutholakale amathuba emisebenzi angu-%1$d</string>
+    <string name="unable_load_jobs_error_code">Ayikwazanga ukulayisha imisebenzi. Ikhodi yephutha: %1$d</string>
+    <string name="connection_failed">Ukuxhumeka kuhlulekile. Hlola i-inthanethi yakho bese uzama futhi.</string>
+    <string name="could_not_connect_adzuna">Akukwazanga ukuxhumeka ku-Adzuna</string>
+    <string name="sign_in_before_saving">Sicela ungene ngaphambi kokulondoloza umsebenzi.</string>
+    <string name="job_opportunity">Ithuba lomsebenzi</string>
+    <string name="job_saved_successfully">Umsebenzi ulondolozwe ngempumelelo</string>
+    <string name="could_not_save_job">Akukwazanga ukulondoloza umsebenzi. Sicela uzame futhi.</string>
+    <string name="searching">Kuyaseshwa…</string>
+
+    <string name="saved_jobs_title">Imisebenzi elondoloziwe</string>
+    <string name="saved_jobs_subtitle">Amathuba akho alondoloziwe</string>
+    <string name="no_saved_jobs">Awukalondolozi msebenzi okwamanje.</string>
+    <string name="view_application_tracker">Buka isilandeleli sezicelo</string>
+
+    <string name="company_not_provided">Inkampani ayinikeziwe</string>
+    <string name="location_not_provided">Indawo ayinikeziwe</string>
+    <string name="could_not_load_saved_jobs">Ayikwazanga ukulayisha imisebenzi elondoloziwe.</string>
+    <string name="no_cached_saved_jobs">Ayikho imisebenzi elondoloziwe etholakala kudivayisi.</string>
+    <string name="offline_mode_saved_jobs">Imodi engaxhunyiwe: kuboniswa imisebenzi elondolozwe kule divayisi.</string>
+
+    <string name="profile_title">Iphrofayela</string>
+    <string name="profile_subtitle">Ulwazi lomsebenzi wakho</string>
+    <string name="skills">Amakhono</string>
+    <string name="no_skills_added">Awekho amakhono angeziwe okwamanje</string>
+    <string name="preferences">Okuncamelayo</string>
+    <string name="no_preferences_added">Akukho okuncamelayo okungeziwe okwamanje</string>
+    <string name="edit_profile">Hlela iphrofayela</string>
+    <string name="view_achievements">Buka izimpumelelo</string>
+
+    <string name="email_not_provided">I-imeyili ayinikeziwe</string>
+    <string name="education_format">Imfundo: %1$s</string>
+    <string name="skills_and_education">%1$s\n%2$s</string>
+    <string name="could_not_load_profile">Ayikwazanga ukulayisha iphrofayela yakho.</string>
+
+</resources>

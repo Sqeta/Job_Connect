@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">JobConnect</string>
+
+    <string name="settings">Litlhophiso</string>
+    <string name="settings_subtitle">Etsa JobConnect hore e be ya hao</string>
+    <string name="language">Puo</string>
+    <string name="appearance">Ponahalo</string>
+    <string name="use_dark_mode">Sebedisa mokgwa o lefifi</string>
+    <string name="job_alerts">Ditsebiso tsa mesebetsi</string>
+    <string name="job_alert_description">Ntsebise ka menyetla ya mesebetsi e loketseng</string>
+    <string name="save_settings">Boloka litlhophiso</string>
+    <string name="saving">E a boloka…</string>
+    <string name="sign_out">Tswa</string>
+
+    <string name="nav_home">●\nLehae</string>
+    <string name="nav_search">●\nBatla</string>
+    <string name="nav_saved">●\nTse bolokilweng</string>
+    <string name="nav_profile">●\nProfaele</string>
+
+    <string name="settings_saved">Litlhophiso li bolokilwe ka katleho.</string>
+    <string name="settings_save_failed">Litlhophiso ha di a kgona ho bolokwa.</string>
+    <string name="settings_load_failed">Litlhophiso tsa hao ha di a kgona ho kenngwa.</string>
+    <string name="job_alerts_enabled">Ditsebiso tsa mesebetsi di butswe.</string>
+    <string name="notification_permission_required">Tumello ya ditsebiso e a hlokahala bakeng sa ditsebiso tsa mesebetsi.</string>
+    <string name="signed_out">O tswile ka katleho.</string>
+
+    <string name="login_title">Kena</string>
+    <string name="login_subtitle">Rea u amohela hape ho JobConnect</string>
+    <string name="jobconnect_logo">Letšoao la JobConnect</string>
+    <string name="jobconnect_name">JobConnect</string>
+    <string name="email_address">Aterese ea imeile</string>
+    <string name="password">Phasewete</string>
+    <string name="forgot_password">U lebetse phasewete?</string>
+    <string name="sign_in">Kena</string>
+    <string name="or">KAPA</string>
+    <string name="continue_with_google">Tsoela pele ka Google</string>
+    <string name="create_account_prompt">Ha u na akhaonto? Theha akhaonto</string>
+
+    <string name="register_title">Ingodise</string>
+    <string name="register_subtitle">Theha profaele ea hau ea JobConnect</string>
+    <string name="full_name">Lebitso le felletseng</string>
+    <string name="confirm_password">Netefatsa phasewete</string>
+    <string name="create_account">Theha akhaonto</string>
+    <string name="already_have_account">U se u ntse u na le akhaonto? Kena</string>
+
+    <string name="home_title">Home</string>
+    <string name="good_morning">Good morning</string>
+    <string name="search_jobs_or_skills">Search jobs or skills</string>
+    <string name="graduate_roles">Graduate roles</string>
+    <string name="junior_android_developer">Junior Android Developer</string>
+    <string name="johannesburg_entry_level">Johannesburg | Entry level</string>
+    <string name="it_support_intern">IT Support Intern</string>
+    <string name="pretoria_internship">Pretoria | Internship</string>
+
+
+    <string name="good_afternoon">Dumela thapama</string>
+    <string name="good_evening">Dumela mantsiboea</string>
+    <string name="job_seeker">Mbatli oa mosebetsi</string>
+    <string name="greeting_with_name">%1$s, %2$s</string>
+
+    <string name="search_jobs_title">Batla mesebetsi</string>
+    <string name="search_jobs_subtitle">Fumana monyetla oa hau o latelang</string>
+    <string name="job_title_or_skill">Lebitso la mosebetsi kapa bokgoni</string>
+    <string name="city_or_province">Toropo kapa profinse</string>
+    <string name="search_jobs_button">Batla mesebetsi</string>
+    <string name="search_start_message">Kenya lebitso la mosebetsi le sebaka ho qala.</string>
+
+    <string name="enter_job_title_error">Ka kopo kenya lebitso la mosebetsi kapa bokgoni</string>
+    <string name="enter_city_error">Ka kopo kenya toropo kapa profinse</string>
+    <string name="enter_location_for_jobs">Kenya sebaka ho batla mesebetsi ea %1$s.</string>
+    <string name="searching_jobs_in">Ho batloa mesebetsi ea %1$s ho %2$s…</string>
+    <string name="no_jobs_found">Ha ho mesebetsi e fumanoeng. Leka lebitso kapa sebaka se seng.</string>
+    <string name="job_opportunities_found">Ho fumanoe menyetla ea mesebetsi e %1$d</string>
+    <string name="unable_load_jobs_error_code">Mesebetsi ha ea khona ho jarisoa. Khoutu ea phoso: %1$d</string>
+    <string name="connection_failed">Khokahano e hlotsoe. Lekola inthanete ea hau ebe u leka hape.</string>
+    <string name="could_not_connect_adzuna">Ha hoa khona ho hokahana le Adzuna</string>
+    <string name="sign_in_before_saving">Ka kopo kena pele u boloka mosebetsi.</string>
+    <string name="job_opportunity">Monyetla oa mosebetsi</string>
+    <string name="job_saved_successfully">Mosebetsi o bolokiloe ka katleho</string>
+    <string name="could_not_save_job">Mosebetsi ha oa khona ho bolokoa. Ka kopo leka hape.</string>
+    <string name="searching">Ho ntse ho batloa…</string>
+
+    <string name="saved_jobs_title">Mesebetsi e bolokiloeng</string>
+    <string name="saved_jobs_subtitle">Menyetla ea hau e bolokiloeng</string>
+    <string name="no_saved_jobs">Ha u so boloke mosebetsi leha e le ofe.</string>
+    <string name="view_application_tracker">Sheba sehlahlo sa likopo</string>
+
+    <string name="company_not_provided">Khampani ha ea fanoa</string>
+    <string name="location_not_provided">Sebaka ha sea fanoa</string>
+    <string name="could_not_load_saved_jobs">Mesebetsi e bolokiloeng ha ea khona ho jarisoa.</string>
+    <string name="no_cached_saved_jobs">Ha ho mesebetsi e bolokiloeng sesebelisoeng sena.</string>
+    <string name="offline_mode_saved_jobs">Mokhoa oa offline: ho bontšoa mesebetsi e bolokiloeng sesebelisoeng sena.</string>
+
+    <string name="profile_title">Profaele</string>
+    <string name="profile_subtitle">Tlhahisoleseding ea mosebetsi oa hau</string>
+    <string name="skills">Bokgoni</string>
+    <string name="no_skills_added">Ha ho bokgoni bo kentsoeng hajoale</string>
+    <string name="preferences">Likhetho</string>
+    <string name="no_preferences_added">Ha ho likhetho tse kentsoeng hajoale</string>
+    <string name="edit_profile">Fetola profaele</string>
+    <string name="view_achievements">Sheba likatleho</string>
+
+    <string name="email_not_provided">Imeile ha ea fanoa</string>
+    <string name="education_format">Thuto: %1$s</string>
+    <string name="skills_and_education">%1$s\n%2$s</string>
+    <string name="could_not_load_profile">Profaele ea hau ha ea khona ho jarisoa.</string>
+
+</resources>
+
